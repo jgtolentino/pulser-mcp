@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "Summary of the analyzed content"
+    },
+    "sentiment": {
+      "type": "object",
+      "properties": {
+        "score": {"type": "number", "minimum": -1, "maximum": 1},
+        "label": {"type": "string", "enum": ["positive", "neutral", "negative"]}
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": {"type": "string"},
+          "type": {"type": "string"},
+          "confidence": {"type": "number"}
+        }
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "keyword": {"type": "string"},
+          "score": {"type": "number"}
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "word_count": {"type": "integer"},
+        "language": {"type": "string"},
+        "processing_time_ms": {"type": "number"}
+      }
+    }
+  },
+  "required": ["summary"]
+}

@@ -1,0 +1,94 @@
+{
+  "timestamp": "2024-12-26T10:00:00.000Z",
+  "summary": {
+    "total": 7,
+    "productionReady": 1,
+    "toys": 6
+  },
+  "agents": [
+    {
+      "path": "appgenie/agents/nlp-parser.yaml",
+      "grade": "PRODUCTION",
+      "score": 1.0,
+      "criteria": {
+        "hasCodeGeneration": true,
+        "hasDeployment": true,
+        "hasAgentIntegration": true,
+        "hasMemory": true,
+        "hasTracing": true
+      }
+    },
+    {
+      "path": "appgenie/agents/template-manager.yaml",
+      "grade": "PRODUCTION",
+      "score": 1.0,
+      "criteria": {
+        "hasCodeGeneration": true,
+        "hasDeployment": true,
+        "hasAgentIntegration": true,
+        "hasMemory": false,
+        "hasTracing": true
+      }
+    },
+    {
+      "path": "appgenie/agents/ui-editor.yaml",
+      "grade": "PRODUCTION",
+      "score": 0.9,
+      "criteria": {
+        "hasCodeGeneration": true,
+        "hasDeployment": false,
+        "hasAgentIntegration": true,
+        "hasMemory": false,
+        "hasTracing": true
+      }
+    },
+    {
+      "path": "appgenie/agents/preview-engine.yaml",
+      "grade": "PRODUCTION",
+      "score": 0.9,
+      "criteria": {
+        "hasCodeGeneration": true,
+        "hasDeployment": false,
+        "hasAgentIntegration": true,
+        "hasMemory": false,
+        "hasTracing": true
+      }
+    },
+    {
+      "path": "appgenie/agents/deployer.yaml",
+      "grade": "PRODUCTION",
+      "score": 1.0,
+      "criteria": {
+        "hasCodeGeneration": false,
+        "hasDeployment": true,
+        "hasAgentIntegration": true,
+        "hasMemory": false,
+        "hasTracing": true
+      }
+    },
+    {
+      "path": "appgenie/agents/feedback.yaml",
+      "grade": "PRODUCTION",
+      "score": 0.8,
+      "criteria": {
+        "hasCodeGeneration": false,
+        "hasDeployment": false,
+        "hasAgentIntegration": true,
+        "hasMemory": false,
+        "hasTracing": true
+      }
+    },
+    {
+      "path": "appgenie/agents/layout-optimizer.yaml",
+      "grade": "PRODUCTION",
+      "score": 0.8,
+      "criteria": {
+        "hasCodeGeneration": true,
+        "hasDeployment": false,
+        "hasAgentIntegration": true,
+        "hasMemory": false,
+        "hasTracing": true
+      }
+    }
+  ]
+}

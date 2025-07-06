@@ -1,0 +1,29 @@
+fastapi==0.110.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+mindsdb-sdk==1.0.5
+pandas==2.2.0
+numpy==1.24.3
+sqlalchemy==2.0.25
+psycopg2-binary==2.9.9
+redis==5.0.1
+httpx==0.26.0
+
+# For data integrations
+slack-sdk==3.26.2
+google-api-python-client==2.116.0
+google-auth-httplib2==0.2.0
+google-auth-oauthlib==1.2.0
+PyGithub==2.1.1
+
+# For analytics
+scikit-learn==1.4.0
+statsmodels==0.14.1
+matplotlib==3.8.2
+plotly==5.18.0
+
+# For Pulser integration
+fastmcp==0.1.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6

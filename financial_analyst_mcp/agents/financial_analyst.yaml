@@ -1,0 +1,167 @@
+agent:
+  name: marketing-kpi-analyst
+  version: "1.0.0"
+  description: "AI-powered financial analyst for marketing KPI forecasting and ROI analysis"
+  
+  capabilities:
+    - kpi_analysis
+    - revenue_forecasting
+    - roi_calculation
+    - trend_detection
+    - code_generation
+    - visualization
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.3  # Lower for accuracy
+    max_tokens: 8192
+    
+  system_prompt: |
+    You are a Marketing KPI Financial Analyst specializing in data-driven insights.
+    
+    Your expertise includes:
+    1. Analyzing marketing performance metrics (revenue, engagement, conversion)
+    2. Forecasting future trends using statistical models
+    3. Calculating ROI and recommending budget optimizations
+    4. Creating clear visualizations for stakeholders
+    
+    Key responsibilities:
+    - Parse complex financial queries accurately
+    - Generate reliable Python code for analysis
+    - Ensure all calculations follow financial best practices
+    - Provide actionable insights, not just numbers
+    
+    Analysis approach:
+    - Always validate data quality first
+    - Use appropriate statistical methods
+    - Consider seasonality and market factors
+    - Present findings with confidence intervals
+    
+    Safety: Never execute unverified code. Always use sandboxed environments.
+
+  tools:
+    - name: analyze_kpis
+      description: "Analyze marketing KPIs with financial metrics"
+      endpoint: "/mcp/tools/analyze_kpis"
+      parameters:
+        query:
+          type: string
+          required: true
+          description: "Natural language analysis request"
+        data_source:
+          type: string
+          required: false
+          default: "supabase"
+          enum: ["supabase", "yfinance", "csv"]
+          description: "Data source for analysis"
+        timeframe:
+          type: string
+          required: false
+          default: "1M"
+          enum: ["1D", "1W", "1M", "3M", "1Y"]
+          description: "Analysis timeframe"
+        metrics:
+          type: array
+          items:
+            type: string
+          required: false
+          default: ["revenue", "engagement", "conversion"]
+          description: "Metrics to analyze"
+        brands:
+          type: array
+          items:
+            type: string
+          required: false
+          description: "Filter by specific brands"
+          
+    - name: generate_code
+      description: "Generate Python code for custom analysis"
+      endpoint: "/mcp/tools/generate_code"
+      parameters:
+        analysis_type:
+          type: string
+          required: true
+          enum: ["forecast", "trend", "comparison", "correlation"]
+          description: "Type of analysis code to generate"
+        parameters:
+          type: object
+          required: true
+          description: "Parameters for code generation"
+          properties:
+            data_loading:
+              type: string
+              description: "Code to load data"
+            metric:
+              type: string
+              description: "Primary metric to analyze"
+            periods:
+              type: integer
+              description: "Forecast periods"
+            title:
+              type: string
+              description: "Chart title"
+        output_format:
+          type: string
+          required: false
+          default: "plot"
+          enum: ["plot", "data", "report"]
+          description: "Desired output format"
+          
+    - name: execute_code
+      description: "Execute analysis code safely"
+      endpoint: "/mcp/tools/execute_code"
+      parameters:
+        code:
+          type: string
+          required: true
+          description: "Python code to execute"
+        timeout:
+          type: integer
+          required: false
+          default: 30
+          description: "Execution timeout in seconds"
+        sandbox:
+          type: boolean
+          required: false
+          default: true
+          description: "Use Docker sandbox for execution"
+          
+  integrations:
+    supabase:
+      tables:
+        - predicted_metrics
+        - campaign_performance
+        - brand_analytics
+      
+    scout_edge:
+      sync_metrics: true
+      real_time_updates: true
+      
+    ces_dashboard:
+      export_insights: true
+      roi_tracking: true
+      
+  crew_configuration:
+    agents:
+      - name: QueryParser
+        role: "Parse financial queries"
+        tools: ["analyze_kpis"]
+      - name: CodeWriter
+        role: "Generate analysis code"
+        tools: ["generate_code"]
+      - name: CodeExecutor
+        role: "Execute code safely"
+        tools: ["execute_code"]
+        
+  performance:
+    cache_results: true
+    cache_ttl: 1800
+    max_concurrent_analyses: 10
+    
+  security:
+    sandbox_required: true
+    code_review: true
+    resource_limits:
+      memory: "512MB"
+      cpu: "50%"
+      execution_time: 60

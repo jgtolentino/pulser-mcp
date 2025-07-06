@@ -1,0 +1,225 @@
+agent:
+  name: deep-researcher-intelligence
+  version: "1.0.0"
+  description: "Advanced competitive intelligence and market research automation system"
+  
+  capabilities:
+    - competitive_analysis
+    - market_intelligence
+    - brand_monitoring
+    - trend_analysis
+    - research_automation
+    - intelligence_reporting
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.1
+    max_tokens: 4096
+    
+  system_prompt: |
+    You are the Deep Researcher, an advanced competitive intelligence specialist.
+    
+    Core expertise:
+    1. Competitive landscape analysis and strategic positioning assessment
+    2. Market research automation with multi-source data synthesis
+    3. Brand monitoring and reputation intelligence gathering
+    4. Trend identification and market dynamics analysis
+    5. Strategic intelligence reporting with actionable insights
+    
+    Research methodologies:
+    - Systematic competitor analysis across digital touchpoints
+    - Market trend identification using pattern recognition
+    - Consumer behavior analysis through social listening
+    - Technology adoption tracking and innovation monitoring
+    - Regulatory landscape assessment and impact analysis
+    
+    Intelligence synthesis approach:
+    - Cross-reference information across multiple reliable sources
+    - Apply critical thinking to validate claims and identify biases
+    - Synthesize findings into strategic insights and recommendations
+    - Maintain objectivity while highlighting competitive advantages
+    - Focus on actionable intelligence for strategic decision making
+    
+    Reporting standards:
+    - Executive summaries with key findings and implications
+    - Detailed analysis with supporting evidence and sources
+    - Strategic recommendations with implementation priorities
+    - Risk assessment and opportunity identification
+    - Confidence scoring for all research findings
+
+  tools:
+    - name: conduct_research
+      description: "Conduct comprehensive research on specified topic"
+      endpoint: "/mcp/tools/conduct_research"
+      parameters:
+        topic:
+          type: string
+          required: true
+          description: "Research topic or question"
+        research_type:
+          type: string
+          required: false
+          default: "competitive_analysis"
+          enum: ["competitive_analysis", "market_trends", "brand_monitoring", "technology_research", "consumer_insights"]
+          description: "Type of research to conduct"
+        depth:
+          type: string
+          required: false
+          default: "standard"
+          enum: ["quick", "standard", "deep"]
+          description: "Research depth and thoroughness"
+        sources:
+          type: array
+          items:
+            type: string
+            enum: ["web", "news", "social", "patents", "financial"]
+          required: false
+          default: ["web", "news", "social"]
+          description: "Data sources to include"
+        filters:
+          type: object
+          required: false
+          description: "Research filters and constraints"
+          properties:
+            geography:
+              type: string
+              description: "Geographic focus"
+            timeframe:
+              type: string
+              description: "Time period to analyze"
+            industry:
+              type: string
+              description: "Industry focus"
+            
+    - name: analyze_competitors
+      description: "Analyze competitive landscape and positioning"
+      endpoint: "/mcp/tools/analyze_competitors"
+      parameters:
+        brand:
+          type: string
+          required: true
+          description: "Brand to analyze"
+        competitors:
+          type: array
+          items:
+            type: string
+          required: false
+          description: "List of competitors to analyze"
+        analysis_areas:
+          type: array
+          items:
+            type: string
+            enum: ["pricing", "products", "marketing", "digital_presence", "content_strategy", "partnerships"]
+          required: false
+          default: ["pricing", "products", "marketing", "digital_presence"]
+          description: "Areas of competitive analysis"
+        time_range:
+          type: string
+          required: false
+          default: "30d"
+          enum: ["7d", "30d", "90d", "1y"]
+          description: "Time range for analysis"
+          
+    - name: analyze_trends
+      description: "Analyze market trends and emerging patterns"
+      endpoint: "/mcp/tools/analyze_trends"
+      parameters:
+        industry:
+          type: string
+          required: true
+          description: "Industry or market to analyze"
+        keywords:
+          type: array
+          items:
+            type: string
+          required: true
+          description: "Keywords and topics to track"
+        time_range:
+          type: string
+          required: false
+          default: "90d"
+          enum: ["30d", "90d", "6m", "1y", "2y"]
+          description: "Time period for trend analysis"
+        geo_focus:
+          type: string
+          required: false
+          default: "Philippines"
+          description: "Geographic focus for analysis"
+          
+    - name: setup_monitoring
+      description: "Setup continuous monitoring for brands/keywords"
+      endpoint: "/mcp/tools/setup_monitoring"
+      parameters:
+        entities:
+          type: array
+          items:
+            type: string
+          required: true
+          description: "Brands, products, or keywords to monitor"
+        monitoring_type:
+          type: string
+          required: false
+          default: "brand_mentions"
+          enum: ["brand_mentions", "product_launches", "pricing_changes", "sentiment_tracking", "competitive_moves"]
+          description: "Type of monitoring to setup"
+        frequency:
+          type: string
+          required: false
+          default: "daily"
+          enum: ["hourly", "daily", "weekly"]
+          description: "Monitoring frequency"
+          
+  data_sources:
+    primary:
+      - web_search
+      - news_feeds
+      - social_media
+      - company_websites
+      - press_releases
+      
+    secondary:
+      - patent_databases
+      - financial_reports
+      - industry_publications
+      - government_data
+      - market_research_reports
+      
+    real_time:
+      - social_media_apis
+      - news_aggregators
+      - competitor_websites
+      - pricing_monitors
+      - job_postings
+      
+  analysis_frameworks:
+    competitive_analysis:
+      - market_positioning_map
+      - feature_comparison_matrix
+      - pricing_strategy_analysis
+      - swot_analysis
+      - competitive_advantage_assessment
+      
+    market_research:
+      - market_sizing_analysis
+      - consumer_behavior_patterns
+      - technology_adoption_curves
+      - regulatory_impact_assessment
+      - growth_opportunity_mapping
+      
+    intelligence_synthesis:
+      - cross_source_validation
+      - pattern_recognition
+      - trend_extrapolation
+      - scenario_planning
+      - risk_opportunity_assessment
+      
+  quality_metrics:
+    research_accuracy: 0.90
+    source_credibility_score: 0.85
+    insight_actionability: 0.80
+    
+  performance:
+    research_completion_time: "15-30 minutes"
+    data_sources_per_topic: "50-100"
+    monitoring_update_frequency: "real-time to daily"
+    report_generation_time: "<5 minutes"

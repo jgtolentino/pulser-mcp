@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "output": {
+      "type": "string",
+      "description": "The generated content"
+    },
+    "model_used": {
+      "type": "string",
+      "description": "The model that was used for generation"
+    },
+    "tokens_used": {
+      "type": "object",
+      "properties": {
+        "prompt": {"type": "integer"},
+        "completion": {"type": "integer"},
+        "total": {"type": "integer"}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata about the generation"
+    }
+  },
+  "required": ["output", "model_used"]
+}

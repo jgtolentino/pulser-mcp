@@ -1,0 +1,290 @@
+agent:
+  name: audio-analysis-call-centre-qa
+  version: "1.0.0"
+  description: "Advanced audio analysis system for call quality assessment, sentiment analysis, and performance insights"
+  
+  capabilities:
+    - audio_quality_assessment
+    - speech_transcription
+    - sentiment_analysis
+    - call_centre_qa
+    - customer_satisfaction_analysis
+    - audio_search_indexing
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.1
+    max_tokens: 4096
+    
+  system_prompt: |
+    You are the Audio Analysis specialist for call centre quality assurance.
+    
+    Core expertise:
+    1. Audio quality assessment with technical metrics and scoring
+    2. Speech transcription with confidence scoring and pattern analysis
+    3. Sentiment analysis and emotional tone detection
+    4. Customer satisfaction measurement and prediction
+    5. Call centre performance optimization and agent coaching
+    6. Audio content search and retrieval systems
+    
+    Analysis methodologies:
+    - Technical audio quality metrics (SNR, clarity, volume levels)
+    - Speech pattern analysis (pace, filler words, interruptions)
+    - Sentiment classification with segment-level granularity
+    - Customer satisfaction indicators and correlation analysis
+    - Agent performance evaluation against quality standards
+    - Automated compliance checking against call centre guidelines
+    
+    Quality assessment framework:
+    - Audio clarity and background noise evaluation
+    - Speech intelligibility and pronunciation assessment
+    - Conversation flow and professional communication standards
+    - Emotional intelligence and empathy measurement
+    - Resolution effectiveness and customer outcome tracking
+    
+    Insight generation approach:
+    - Performance trend identification across agents and time periods
+    - Correlation analysis between call quality and customer outcomes
+    - Coaching recommendations based on specific improvement areas
+    - Customer satisfaction prediction models
+    - Best practice identification from high-performing calls
+
+  tools:
+    - name: analyze_audio
+      description: "Comprehensive audio analysis for call centre QA"
+      endpoint: "/mcp/tools/analyze_audio"
+      parameters:
+        audio_path:
+          type: string
+          required: true
+          description: "Path to audio file for analysis"
+        analysis_type:
+          type: string
+          required: false
+          default: "comprehensive"
+          enum: ["comprehensive", "quality_only", "sentiment_only", "transcription_only"]
+          description: "Type of analysis to perform"
+        speaker_detection:
+          type: boolean
+          required: false
+          default: true
+          description: "Enable speaker detection and separation"
+        language:
+          type: string
+          required: false
+          default: "en-US"
+          description: "Language for speech recognition"
+        metadata:
+          type: object
+          required: false
+          description: "Additional metadata for the audio"
+          properties:
+            agent_id:
+              type: string
+              description: "Call centre agent identifier"
+            customer_id:
+              type: string
+              description: "Customer identifier"
+            call_type:
+              type: string
+              description: "Type of call (support, sales, complaint)"
+            department:
+              type: string
+              description: "Department handling the call"
+            date:
+              type: string
+              description: "Date of the call"
+            
+    - name: assess_quality
+      description: "Assess call quality against specific metrics and guidelines"
+      endpoint: "/mcp/tools/assess_quality"
+      parameters:
+        audio_id:
+          type: string
+          required: true
+          description: "Audio ID from previous analysis"
+        quality_metrics:
+          type: array
+          items:
+            type: string
+            enum: ["clarity", "volume", "background_noise", "interruptions", "pace"]
+          required: false
+          default: ["clarity", "volume", "background_noise", "interruptions", "pace"]
+          description: "Quality metrics to assess"
+        agent_guidelines:
+          type: object
+          required: false
+          description: "Agent performance guidelines and thresholds"
+          properties:
+            clarity_threshold:
+              type: number
+              description: "Minimum clarity score (0-100)"
+            pace_target:
+              type: number
+              description: "Target words per minute"
+            interruption_limit:
+              type: number
+              description: "Maximum allowed interruptions"
+            sentiment_target:
+              type: number
+              description: "Target sentiment score"
+              
+    - name: analyze_sentiment
+      description: "Analyze sentiment and customer satisfaction indicators"
+      endpoint: "/mcp/tools/analyze_sentiment"
+      parameters:
+        audio_id:
+          type: string
+          required: true
+          description: "Audio ID from previous analysis"
+        analysis_segments:
+          type: boolean
+          required: false
+          default: true
+          description: "Enable segment-level sentiment analysis"
+        customer_satisfaction_focus:
+          type: boolean
+          required: false
+          default: true
+          description: "Focus on customer satisfaction indicators"
+          
+    - name: search_audio
+      description: "Search through analyzed audio files using various criteria"
+      endpoint: "/mcp/tools/search_audio"
+      parameters:
+        query:
+          type: string
+          required: true
+          description: "Search query (keywords, phrases, or semantic description)"
+        search_type:
+          type: string
+          required: false
+          default: "semantic"
+          enum: ["semantic", "keyword", "sentiment", "quality_score"]
+          description: "Type of search to perform"
+        filters:
+          type: object
+          required: false
+          description: "Search filters"
+          properties:
+            agent_id:
+              type: string
+              description: "Filter by agent"
+            call_type:
+              type: string
+              description: "Filter by call type"
+            quality_score_min:
+              type: number
+              description: "Minimum quality score"
+            sentiment_score_min:
+              type: number
+              description: "Minimum sentiment score"
+            date_range:
+              type: object
+              description: "Date range filter"
+              properties:
+                start_date:
+                  type: string
+                  description: "Start date (ISO format)"
+                end_date:
+                  type: string
+                  description: "End date (ISO format)"
+        limit:
+          type: integer
+          required: false
+          default: 10
+          description: "Maximum number of results"
+          
+    - name: upload_audio
+      description: "Upload and analyze audio file"
+      endpoint: "/mcp/tools/upload_audio"
+      parameters:
+        file:
+          type: file
+          required: true
+          description: "Audio file to upload"
+        analysis_type:
+          type: string
+          required: false
+          default: "comprehensive"
+          description: "Type of analysis to perform"
+        metadata:
+          type: string
+          required: false
+          default: "{}"
+          description: "JSON string of metadata"
+          
+  data_sources:
+    primary:
+      - call_recordings
+      - agent_audio_files
+      - customer_interaction_logs
+      - quality_assessment_records
+      
+    analysis_outputs:
+      - transcription_data
+      - quality_metrics
+      - sentiment_scores
+      - satisfaction_indicators
+      - performance_assessments
+      
+    storage:
+      - qdrant_vectors
+      - processed_audio
+      - analysis_reports
+      - quality_dashboards
+      
+  analysis_frameworks:
+    audio_quality:
+      - signal_to_noise_ratio
+      - clarity_assessment
+      - volume_level_analysis
+      - background_noise_detection
+      - audio_consistency_check
+      
+    speech_analysis:
+      - transcription_accuracy
+      - speech_pattern_recognition
+      - pace_and_rhythm_analysis
+      - filler_word_detection
+      - interruption_tracking
+      
+    sentiment_evaluation:
+      - emotion_classification
+      - polarity_scoring
+      - subjectivity_measurement
+      - satisfaction_prediction
+      - escalation_risk_assessment
+      
+    performance_metrics:
+      - agent_effectiveness_scoring
+      - customer_outcome_correlation
+      - coaching_opportunity_identification
+      - best_practice_extraction
+      - trend_analysis_reporting
+      
+  quality_standards:
+    audio_quality_thresholds:
+      minimum_clarity_score: 70
+      maximum_background_noise: 20
+      target_volume_range: [10, 80]
+      interruption_limit: 3
+      
+    speech_quality_thresholds:
+      minimum_transcription_confidence: 80
+      maximum_filler_word_percentage: 8
+      target_words_per_minute: [120, 180]
+      maximum_response_time: 5
+      
+    customer_satisfaction_targets:
+      minimum_sentiment_score: 0.2
+      target_satisfaction_score: 75
+      escalation_risk_threshold: 30
+      resolution_indicator_target: 2
+      
+  performance:
+    processing_speed: "2-5x real-time"
+    transcription_accuracy: "88-95%"
+    sentiment_classification_accuracy: "85-92%"
+    quality_assessment_time: "<30 seconds per minute"
+    concurrent_analysis_capacity: "10-20 calls"

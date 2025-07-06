@@ -1,0 +1,166 @@
+agent:
+  name: ph-retail-synthetic-generator
+  version: "1.0.0"
+  description: "Synthetic data generator for PH retail landscape with TBWA client footprint"
+  
+  capabilities:
+    - transaction_generation
+    - market_simulation
+    - geo_accurate_locations
+    - tobacco_modeling
+    - data_validation
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.3
+    max_tokens: 4096
+    
+  system_prompt: |
+    You are the PH Retail Synthetic Data Generator, creating realistic market data.
+    
+    Key responsibilities:
+    1. Generate transactions that mirror real PH retail patterns
+    2. Maintain accurate TBWA client share (55%) vs competitors
+    3. Model tobacco category with JTI at 40% share
+    4. Use authentic barangay-level locations with sari-sari stores
+    5. Simulate realistic shopping behaviors and patterns
+    
+    Market dynamics to model:
+    - Peak hours: 6-9am, 5-8pm (commute times)
+    - Weekend surge: 20-30% higher volume
+    - Payday patterns: 15th and 30th of month
+    - Regional preferences (e.g., more dairy in urban areas)
+    - Multi-item baskets for tobacco buyers (6% probability)
+    
+    Geographic accuracy:
+    - Use real barangay names from master location table
+    - Authentic Filipino sari-sari store names
+    - Correct regional/provincial hierarchies
+    - Population-weighted distribution
+
+  tools:
+    - name: generate_data
+      description: "Generate synthetic retail transaction data"
+      endpoint: "/mcp/tools/generate_data"
+      parameters:
+        dataset_type:
+          type: string
+          required: true
+          default: "transactions"
+          enum: ["transactions", "inventory", "customer_profiles"]
+          description: "Type of dataset to generate"
+        num_records:
+          type: integer
+          required: true
+          default: 10000
+          description: "Number of records to generate"
+        start_date:
+          type: string
+          required: false
+          format: date
+          description: "Start date (YYYY-MM-DD)"
+        end_date:
+          type: string
+          required: false
+          format: date
+          description: "End date (YYYY-MM-DD)"
+        client_weight:
+          type: number
+          required: false
+          default: 0.55
+          minimum: 0
+          maximum: 1
+          description: "TBWA client market share"
+        tobacco_share:
+          type: number
+          required: false
+          default: 0.18
+          minimum: 0
+          maximum: 1
+          description: "Tobacco category share of transactions"
+        output_format:
+          type: string
+          required: false
+          default: "csv"
+          enum: ["csv", "json", "parquet"]
+          description: "Output file format"
+          
+    - name: validate_quality
+      description: "Validate synthetic data quality"
+      endpoint: "/mcp/tools/validate_quality"
+      parameters:
+        dataset_path:
+          type: string
+          required: true
+          description: "Path to dataset file"
+        validation_rules:
+          type: array
+          items:
+            type: string
+            enum: ["completeness", "distribution", "outliers"]
+          required: false
+          default: ["completeness", "distribution", "outliers"]
+          description: "Validation checks to perform"
+          
+    - name: simulate_scenario
+      description: "Generate data for market scenarios"
+      endpoint: "/mcp/tools/simulate_scenario"
+      parameters:
+        scenario:
+          type: string
+          required: true
+          enum: ["normal", "peak_season", "competitor_promo", "supply_shortage"]
+          description: "Market scenario to simulate"
+        duration_days:
+          type: integer
+          required: true
+          default: 30
+          description: "Scenario duration in days"
+        affected_brands:
+          type: array
+          items:
+            type: string
+          required: false
+          description: "Specific brands affected"
+        impact_factor:
+          type: number
+          required: false
+          default: 1.2
+          minimum: 0.5
+          maximum: 2.0
+          description: "Scenario impact multiplier"
+          
+  data_sources:
+    brands:
+      total: 57
+      tbwa_clients: 39
+      competitors: 18
+      categories:
+        - Dairy
+        - Snacks
+        - Beverage
+        - Home Care
+        - Personal Care
+        - Tobacco
+        - Food
+        
+    locations:
+      regions: 17
+      cities: 146
+      barangays: 500+
+      stores: 1000+
+      
+    products:
+      skus: 150+
+      pack_sizes: various
+      price_range: "₱8 - ₱300"
+      
+  quality_metrics:
+    completeness_target: 0.99
+    distribution_variance: 0.05
+    outlier_threshold: 0.02
+    
+  performance:
+    generation_rate: "10,000 records/second"
+    max_batch_size: 1000000
+    memory_efficient: true

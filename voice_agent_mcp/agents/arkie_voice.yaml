@@ -1,0 +1,185 @@
+agent:
+  name: arkie-voice-sdr
+  version: "1.0.0"
+  description: "AI-powered voice agent for automated sales development and call handling"
+  
+  capabilities:
+    - real_time_voice
+    - speech_to_text
+    - call_analytics
+    - contact_discovery
+    - auto_followup
+    - sentiment_tracking
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.7
+    max_tokens: 4096
+    voice_model: elevenlabs/rachel
+    
+  system_prompt: |
+    You are Arkie, an AI-powered Sales Development Representative with voice capabilities.
+    
+    Your primary functions:
+    1. Handle inbound and outbound voice calls professionally
+    2. Qualify leads using BANT methodology
+    3. Schedule follow-up meetings
+    4. Extract and analyze conversation insights
+    5. Discover new contacts from company websites
+    
+    Communication style:
+    - Professional yet conversational
+    - Active listening with empathetic responses
+    - Clear articulation of value propositions
+    - Natural conversation flow with appropriate pauses
+    
+    During calls:
+    - Introduce yourself clearly
+    - Ask open-ended discovery questions
+    - Take detailed notes for CRM updates
+    - Identify pain points and opportunities
+    - Summarize key points before ending
+    
+    Always maintain:
+    - Respectful tone
+    - Data privacy compliance
+    - Accurate information capture
+    - Timely follow-up actions
+
+  tools:
+    - name: start_voice_session
+      description: "Initialize a new voice call session"
+      endpoint: "/mcp/tools/start_voice_session"
+      parameters:
+        session_id:
+          type: string
+          required: false
+          description: "Unique session identifier"
+        participant_name:
+          type: string
+          required: true
+          description: "Name of the call participant"
+        context:
+          type: object
+          required: false
+          description: "Call context (lead info, purpose, etc.)"
+          properties:
+            lead_id:
+              type: string
+            company:
+              type: string
+            purpose:
+              type: string
+              enum: ["discovery", "demo", "follow_up", "support"]
+        language:
+          type: string
+          required: false
+          default: "en"
+          description: "Preferred language"
+          
+    - name: transcribe_audio
+      description: "Convert speech to text with analytics"
+      endpoint: "/mcp/tools/transcribe_audio"
+      parameters:
+        audio_url:
+          type: string
+          required: true
+          description: "URL of audio recording"
+        session_id:
+          type: string
+          required: false
+          description: "Link to voice session"
+        speaker_labels:
+          type: boolean
+          required: false
+          default: true
+          description: "Identify different speakers"
+          
+    - name: analyze_call
+      description: "Extract insights from call transcripts"
+      endpoint: "/mcp/tools/analyze_call"
+      parameters:
+        session_id:
+          type: string
+          required: true
+          description: "Session to analyze"
+        analysis_type:
+          type: string
+          required: false
+          default: "summary"
+          enum: ["sentiment", "summary", "action_items"]
+          description: "Type of analysis"
+          
+    - name: crawl_for_contacts
+      description: "Find contacts from company websites"
+      endpoint: "/mcp/tools/crawl_for_contacts"
+      parameters:
+        url:
+          type: string
+          required: true
+          description: "Company website URL"
+        extract_contacts:
+          type: boolean
+          required: false
+          default: true
+          description: "Extract contact details"
+        max_depth:
+          type: integer
+          required: false
+          default: 2
+          description: "Crawl depth limit"
+          
+  integrations:
+    livekit:
+      url: ws://localhost:7880
+      room_prefix: arkie_
+      recording_enabled: true
+      
+    assemblyai:
+      features:
+        - speaker_diarization
+        - sentiment_analysis
+        - entity_detection
+        - auto_chapters
+        
+    supabase:
+      tables:
+        - voice_sessions
+        - transcriptions
+        - call_analytics
+        - crawled_contacts
+        
+    crm_sync:
+      platforms:
+        - salesforce
+        - hubspot
+        - pipedrive
+      auto_update: true
+      
+  voice_settings:
+    greeting: "Hi, this is Arkie from [Company]. How are you today?"
+    voice_provider: elevenlabs
+    voice_id: rachel
+    speech_rate: 1.0
+    pitch: 0
+    
+  call_handling:
+    max_duration: 1800  # 30 minutes
+    recording_format: wav
+    auto_transcribe: true
+    compliance:
+      announce_recording: true
+      gdpr_compliant: true
+      
+  performance:
+    concurrent_calls: 10
+    transcription_queue: 50
+    response_time_ms: 500
+    
+  analytics:
+    track_metrics:
+      - call_duration
+      - sentiment_score
+      - qualification_score
+      - action_items_generated
+      - follow_up_scheduled

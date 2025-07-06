@@ -1,0 +1,88 @@
+mcp:
+  name: scout-local-mcp
+  version: "1.0.0"
+  description: "100% Local SQLite-based MCP for Scout Analytics offline mode"
+  
+  server:
+    type: http
+    host: localhost
+    port: 8000
+    base_path: /mcp
+    
+  capabilities:
+    - data_storage
+    - offline_analytics
+    - trend_analysis
+    - transcription_management
+    
+  tools:
+    add_transcription:
+      description: "Add sales transcription to local SQLite database"
+      input_schema:
+        type: object
+        properties:
+          store_id:
+            type: string
+            description: "Unique store identifier"
+          region:
+            type: string
+            description: "Geographic region"
+          brand:
+            type: string
+            description: "Brand name"
+          transcript:
+            type: string
+            description: "Sales conversation transcript"
+          metadata:
+            type: object
+            description: "Additional metadata"
+        required: ["store_id", "region", "brand", "transcript"]
+        
+    fetch_transcriptions:
+      description: "Query transcriptions with flexible filters"
+      input_schema:
+        type: object
+        properties:
+          query:
+            type: string
+          params:
+            type: object
+            properties:
+              store_id:
+                type: string
+              region:
+                type: string
+              brand:
+                type: string
+              date_from:
+                type: string
+                format: date-time
+              date_to:
+                type: string
+                format: date-time
+        required: ["query"]
+        
+    analyze_trends:
+      description: "Perform offline trend analysis on cached data"
+      input_schema:
+        type: object
+        properties: {}
+        
+  deployment:
+    edge_mode: true
+    offline_capable: true
+    sync_strategy: opportunistic
+    
+  storage:
+    type: sqlite
+    path: ./data/scout_local.db
+    cache_size: 100MB
+    
+  security:
+    acl_enabled: true
+    encryption: at_rest
+    
+  monitoring:
+    log_level: INFO
+    metrics_enabled: true
+    health_check_interval: 60

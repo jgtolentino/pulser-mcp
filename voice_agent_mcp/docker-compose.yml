@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  livekit:
+    image: livekit/livekit-server:latest
+    container_name: arkie-livekit
+    ports:
+      - "7880:7880"   # HTTP
+      - "7881:7881"   # RTC TCP
+      - "7882:7882/udp" # RTC UDP
+    environment:
+      - LIVEKIT_KEYS=devkey:secret
+      - LIVEKIT_WEBHOOK_URLS=http://voice-agent:8003/webhooks/livekit
+    command: --dev --node-ip=127.0.0.1
+    networks:
+      - voice-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: arkie-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - voice-network
+
+  voice-agent:
+    build: .
+    container_name: arkie-voice-agent
+    ports:
+      - "8003:8003"
+    environment:
+      - LIVEKIT_URL=ws://livekit:7880
+      - LIVEKIT_API_KEY=devkey
+      - LIVEKIT_API_SECRET=secret
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./recordings:/app/recordings
+      - ./logs:/app/logs
+    depends_on:
+      - livekit
+      - redis
+    networks:
+      - voice-network
+
+networks:
+  voice-network:
+    driver: bridge
+
+volumes:
+  redis-data:

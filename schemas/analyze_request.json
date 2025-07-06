@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "document_url": {
+      "type": "string",
+      "description": "URL of the document to analyze"
+    },
+    "content": {
+      "type": "string",
+      "description": "Direct content to analyze (alternative to URL)"
+    },
+    "analysis_type": {
+      "type": "string",
+      "enum": ["summary", "sentiment", "entities", "keywords", "comprehensive"],
+      "default": "comprehensive"
+    },
+    "options": {
+      "type": "object",
+      "properties": {
+        "language": {"type": "string"},
+        "max_summary_length": {"type": "integer"},
+        "extract_tables": {"type": "boolean"},
+        "extract_images": {"type": "boolean"}
+      }
+    }
+  },
+  "oneOf": [
+    {"required": ["document_url"]},
+    {"required": ["content"]}
+  ]
+}

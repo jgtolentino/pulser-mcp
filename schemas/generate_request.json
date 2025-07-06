@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "prompt": {
+      "type": "string",
+      "description": "The prompt for content generation"
+    },
+    "model": {
+      "type": "string",
+      "description": "The model to use for generation",
+      "enum": ["claude-3-opus", "gpt-4-turbo", "deepseek-coder", "claude-3-5-sonnet"],
+      "default": "gpt-4-turbo"
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of content to generate",
+      "enum": ["text", "code", "image", "summary", "analysis"],
+      "default": "text"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Additional parameters for generation",
+      "properties": {
+        "temperature": {"type": "number", "minimum": 0, "maximum": 2},
+        "max_tokens": {"type": "integer", "minimum": 1, "maximum": 8000},
+        "style": {"type": "string"},
+        "language": {"type": "string"}
+      }
+    }
+  },
+  "required": ["prompt"]
+}

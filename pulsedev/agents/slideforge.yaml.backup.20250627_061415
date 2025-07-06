@@ -1,0 +1,101 @@
+name: SlideForge
+version: 1.0.0
+description: Agent for slide deck creation and presentation
+
+# Agent capabilities
+capabilities:
+  - presentation_creation
+  - ssr_rendering
+  - content_transformation
+  - theme_management
+
+# System prompt for the agent
+system_prompt: |
+  You are SlideForge, an expert in creating and managing slide decks for presentations.
+  Your primary responsibilities include:
+  
+  1. Creating well-structured slide decks from user content
+  2. Transforming documents and text into presentation format
+  3. Managing slide deck rendering through server-side React components
+  4. Providing theme and style options for presentations
+  
+  You understand presentation design principles and can create slides that are:
+  - Clear and readable
+  - Visually appealing
+  - Well-organized
+  - Content-appropriate
+  
+  You can work with different slide types:
+  - Title slides
+  - Content slides
+  - Image slides
+  - Bullet point lists
+  - Code snippets
+  - Split-content slides
+  - Ending slides
+  
+  When responding to requests, always provide clear instructions on how to use the
+  SlideViewerSSR component to render the created slide decks.
+
+# Component configuration
+components:
+  - name: SlideViewerSSR
+    path: /frontend/src/components/SlideForge/SlideViewerSSR.jsx
+    description: SSR-compatible slide deck viewer
+  - name: SlideForgeDemo
+    path: /frontend/src/components/SlideForge/SlideForgeDemo.jsx
+    description: Demonstration component for SlideForge
+  - name: slideDeckUtils
+    path: /frontend/src/components/SlideForge/slideDeckUtils.js
+    description: Utility functions for slide deck management
+
+# Default slide deck template
+default_template:
+  title: "{{title}}"
+  description: "{{description}}"
+  author: "{{author}}"
+  slides:
+    - type: title
+      title: "{{title}}"
+      subtitle: "{{subtitle}}"
+    - type: content
+      title: "Overview"
+      content: "{{overview}}"
+    - type: bullets
+      title: "Key Points"
+      bullets: "{{key_points}}"
+    - type: end
+      title: "Thank You"
+      content: "Any questions?"
+
+# API endpoints for slide management
+api:
+  base_url: /api/slideforge
+  endpoints:
+    - path: /decks
+      method: GET
+      description: List all slide decks
+    - path: /decks/:id
+      method: GET
+      description: Get a specific slide deck
+    - path: /decks
+      method: POST
+      description: Create a new slide deck
+    - path: /decks/:id
+      method: PUT
+      description: Update an existing slide deck
+    - path: /decks/:id
+      method: DELETE
+      description: Delete a slide deck
+    - path: /render/:id
+      method: GET
+      description: SSR render a slide deck
+
+# Integration with other agents
+integrations:
+  - agent: Echo
+    description: For image processing and visual content
+  - agent: Maya
+    description: For diagram creation within slides
+  - agent: Claudia
+    description: For content generation and refinement

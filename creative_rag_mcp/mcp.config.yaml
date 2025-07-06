@@ -1,0 +1,104 @@
+mcp:
+  name: creative-rag-mcp
+  version: "1.0.0"
+  description: "Vector-based RAG for creative assets using Qdrant and ColPali embeddings"
+  
+  server:
+    type: http
+    host: localhost
+    port: 8001
+    base_path: /mcp
+    
+  capabilities:
+    - vector_search
+    - asset_ingestion
+    - web_search
+    - similarity_matching
+    - creative_discovery
+    
+  tools:
+    ingest_asset:
+      description: "Ingest creative assets with metadata"
+      input_schema:
+        type: object
+        properties:
+          asset_id:
+            type: string
+            description: "Unique asset identifier"
+          asset_type:
+            type: string
+            enum: ["storyboard", "thumbnail", "video_frame", "creative_brief"]
+          brand:
+            type: string
+          campaign:
+            type: string
+          metadata:
+            type: object
+            description: "Awards, tags, metrics"
+          text_content:
+            type: string
+          image_url:
+            type: string
+        required: ["asset_id", "asset_type", "brand"]
+        
+    search_vector:
+      description: "Semantic search across creative assets"
+      input_schema:
+        type: object
+        properties:
+          query:
+            type: string
+          query_type:
+            type: string
+            enum: ["text", "image", "hybrid"]
+            default: "text"
+          top_k:
+            type: integer
+            default: 10
+          filters:
+            type: object
+            description: "Filter by brand, campaign, type"
+        required: ["query"]
+        
+    search_web:
+      description: "Find creative references from web"
+      input_schema:
+        type: object
+        properties:
+          query:
+            type: string
+          domains:
+            type: array
+            items:
+              type: string
+          max_results:
+            type: integer
+            default: 10
+        required: ["query"]
+        
+  storage:
+    vector_db:
+      type: qdrant
+      host: localhost
+      port: 6333
+      collection: creative_assets
+      embedding_size: 768
+      
+  embeddings:
+    model: colpali
+    dimension: 768
+    batch_size: 32
+    
+  performance:
+    cache_enabled: true
+    cache_ttl: 3600
+    max_concurrent_requests: 50
+    
+  security:
+    api_key_required: false
+    rate_limiting:
+      requests_per_minute: 100
+      
+  monitoring:
+    log_level: INFO
+    metrics_enabled: true

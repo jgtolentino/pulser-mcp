@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# Environment
+.env
+.env.local
+.env.production
+.secrets
+
+# Database
+*.db
+*.sqlite
+scout.db
+data/
+qdrant_storage/
+
+# Logs
+logs/
+*.log
+
+# Docker
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Backups
+backups/
+*.enc
+*.backup
+
+# Certificates
+*.pem
+*.crt
+*.key
+certificates/
+
+# Test
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary
+tmp/
+temp/
+EOF < /dev/null

@@ -1,0 +1,27 @@
+fastapi==0.110.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pandas==2.2.0
+numpy==1.24.3
+matplotlib==3.8.2
+seaborn==0.13.2
+yfinance==0.2.36
+scikit-learn==1.4.0
+crewai==0.28.0
+docker==7.0.0
+
+# For financial analysis
+statsmodels==0.14.1
+prophet==1.1.5
+plotly==5.18.0
+
+# For data sources
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.25
+
+# For Pulser integration
+fastmcp==0.1.0
+openbb-terminal==3.0.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6

@@ -1,0 +1,51 @@
+routes:
+  scout_local:
+    description: "Local analytics and transcription management"
+    
+    patterns:
+      - match: "analyze.*local.*"
+        tool: analyze_trends
+        priority: 100
+        
+      - match: "add.*transcript.*"
+        tool: add_transcription
+        priority: 90
+        
+      - match: "store.*transcript.*"
+        tool: add_transcription
+        priority: 90
+        
+      - match: "fetch.*transcript.*"
+        tool: fetch_transcriptions
+        priority: 85
+        
+      - match: "get.*transcript.*"
+        tool: fetch_transcriptions
+        priority: 85
+        
+      - match: "query.*transcript.*"
+        tool: fetch_transcriptions
+        priority: 85
+        
+      - match: ".*offline.*analytic.*"
+        tool: analyze_trends
+        priority: 80
+        
+      - match: ".*local.*trend.*"
+        tool: analyze_trends
+        priority: 80
+        
+    capabilities:
+      - offline_operation
+      - local_storage
+      - trend_analysis
+      - data_sync
+      
+    constraints:
+      max_db_size: "500MB"
+      max_query_results: 1000
+      cache_ttl: 3600
+      
+    fallback:
+      message: "Scout Local MCP handles offline analytics. Available tools: add_transcription, fetch_transcriptions, analyze_trends"
+      suggest_tools: true

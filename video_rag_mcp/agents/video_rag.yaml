@@ -1,0 +1,262 @@
+agent:
+  name: video-rag-creative-diagnostics
+  version: "1.0.0"
+  description: "Advanced video analysis system for creative performance, brand compliance, and content intelligence"
+  
+  capabilities:
+    - video_content_analysis
+    - frame_extraction
+    - audio_transcription
+    - brand_compliance_checking
+    - creative_performance_insights
+    - multi_modal_search
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.2
+    max_tokens: 4096
+    
+  system_prompt: |
+    You are the Video RAG Creative Diagnostics specialist.
+    
+    Core expertise:
+    1. Video content analysis and semantic indexing for creative assets
+    2. Frame-by-frame visual analysis with AI-powered captioning
+    3. Audio transcription and speech-to-text processing
+    4. Brand compliance checking against creative guidelines
+    5. Creative performance insights and optimization recommendations
+    6. Multi-modal search across video libraries
+    
+    Analysis methodologies:
+    - Automated frame extraction at configurable intervals
+    - Visual analysis using computer vision and image captioning
+    - Audio processing with speech recognition and sentiment analysis
+    - Color palette analysis and brand consistency checking
+    - Composition and visual hierarchy assessment
+    - Content pacing and engagement optimization
+    
+    Compliance frameworks:
+    - Brand guideline adherence verification
+    - Logo placement and sizing compliance
+    - Color scheme and typography validation
+    - Messaging consistency and tone checking
+    - Audio quality and clarity assessment
+    
+    Creative intelligence approach:
+    - Performance correlation analysis across campaigns
+    - Visual trend identification and pattern recognition
+    - Audience engagement prediction based on content elements
+    - A/B testing insights for creative optimization
+    - Creative asset lifecycle management and versioning
+
+  tools:
+    - name: analyze_video
+      description: "Analyze video for content, compliance, and performance insights"
+      endpoint: "/mcp/tools/analyze_video"
+      parameters:
+        video_path:
+          type: string
+          required: true
+          description: "Path to video file for analysis"
+        analysis_type:
+          type: string
+          required: false
+          default: "comprehensive"
+          enum: ["comprehensive", "brand_compliance", "performance_analysis", "content_summary"]
+          description: "Type of analysis to perform"
+        extract_audio:
+          type: boolean
+          required: false
+          default: true
+          description: "Whether to extract and analyze audio"
+        frame_sampling_rate:
+          type: integer
+          required: false
+          default: 30
+          description: "Extract frame every N frames"
+        metadata:
+          type: object
+          required: false
+          description: "Additional metadata for the video"
+          properties:
+            campaign:
+              type: string
+              description: "Campaign or project name"
+            brand:
+              type: string
+              description: "Brand associated with video"
+            format:
+              type: string
+              description: "Video format (TV, digital, social)"
+            duration_target:
+              type: string
+              description: "Target duration category"
+            
+    - name: check_compliance
+      description: "Check video for brand compliance against guidelines"
+      endpoint: "/mcp/tools/check_compliance"
+      parameters:
+        video_id:
+          type: string
+          required: true
+          description: "Video ID from previous analysis"
+        brand_guidelines:
+          type: object
+          required: true
+          description: "Brand guidelines for compliance checking"
+          properties:
+            logo_placement:
+              type: object
+              description: "Logo placement requirements"
+            brand_colors:
+              type: object
+              description: "Approved brand colors"
+              properties:
+                approved_colors:
+                  type: array
+                  items:
+                    type: string
+                  description: "List of approved hex colors"
+            messaging_guidelines:
+              type: object
+              description: "Messaging and tone requirements"
+              properties:
+                required_phrases:
+                  type: array
+                  items:
+                    type: string
+                  description: "Phrases that must be included"
+                prohibited_phrases:
+                  type: array
+                  items:
+                    type: string
+                  description: "Phrases that must not be included"
+        check_areas:
+          type: array
+          items:
+            type: string
+            enum: ["logo_placement", "color_compliance", "messaging", "audio_quality"]
+          required: false
+          default: ["logo_placement", "color_compliance", "messaging", "audio_quality"]
+          description: "Areas to check for compliance"
+          
+    - name: search_videos
+      description: "Search through analyzed videos using semantic or visual search"
+      endpoint: "/mcp/tools/search_videos"
+      parameters:
+        query:
+          type: string
+          required: true
+          description: "Search query (text description or keywords)"
+        search_type:
+          type: string
+          required: false
+          default: "semantic"
+          enum: ["semantic", "visual", "audio", "metadata"]
+          description: "Type of search to perform"
+        filters:
+          type: object
+          required: false
+          description: "Search filters"
+          properties:
+            brand:
+              type: string
+              description: "Filter by brand"
+            campaign:
+              type: string
+              description: "Filter by campaign"
+            duration_min:
+              type: number
+              description: "Minimum duration in seconds"
+            duration_max:
+              type: number
+              description: "Maximum duration in seconds"
+            created_after:
+              type: string
+              description: "Filter by creation date (ISO format)"
+        limit:
+          type: integer
+          required: false
+          default: 10
+          description: "Maximum number of results"
+          
+    - name: upload_video
+      description: "Upload and analyze video file"
+      endpoint: "/mcp/tools/upload_video"
+      parameters:
+        file:
+          type: file
+          required: true
+          description: "Video file to upload"
+        analysis_type:
+          type: string
+          required: false
+          default: "comprehensive"
+          description: "Type of analysis to perform"
+        metadata:
+          type: string
+          required: false
+          default: "{}"
+          description: "JSON string of metadata"
+          
+  data_sources:
+    primary:
+      - video_files
+      - audio_tracks
+      - frame_sequences
+      - metadata_tags
+      
+    analysis_outputs:
+      - visual_descriptions
+      - audio_transcripts
+      - color_palettes
+      - composition_metrics
+      - compliance_reports
+      
+    storage:
+      - qdrant_vectors
+      - processed_frames
+      - analysis_results
+      - compliance_history
+      
+  analysis_frameworks:
+    visual_analysis:
+      - frame_extraction
+      - object_detection
+      - color_analysis
+      - composition_assessment
+      - brand_element_detection
+      
+    audio_analysis:
+      - speech_to_text
+      - speaker_identification
+      - audio_quality_metrics
+      - background_music_detection
+      - silence_pattern_analysis
+      
+    compliance_checking:
+      - brand_guideline_validation
+      - logo_placement_verification
+      - color_scheme_compliance
+      - messaging_consistency
+      - audio_clarity_standards
+      
+    performance_insights:
+      - engagement_prediction
+      - attention_mapping
+      - pacing_optimization
+      - emotional_response_analysis
+      - conversion_correlation
+      
+  quality_metrics:
+    analysis_accuracy: 0.92
+    frame_processing_speed: "5-10 fps"
+    audio_transcription_accuracy: 0.88
+    compliance_detection_rate: 0.85
+    
+  performance:
+    video_processing_time: "2-5 minutes per minute of video"
+    frame_analysis_speed: "100-200 frames per minute"
+    audio_processing_time: "real-time to 2x speed"
+    search_response_time: "<2 seconds"
+    concurrent_video_capacity: "5-10 videos"

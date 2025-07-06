@@ -1,0 +1,31 @@
+{
+  "bootstrap_completed_at": "2025-07-06T15:00:30.639724",
+  "discovered_servers": 12,
+  "registered_servers": 12,
+  "healthy_servers": 0,
+  "unhealthy_servers": 12,
+  "files_created": [
+    "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/mcp_registry.json",
+    "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/pulser_config.yaml",
+    "start_all_servers.sh",
+    "stop_all_servers.sh",
+    "start_slideforge_mcp.sh",
+    "start_shared_memory_mcp.sh",
+    "start_audio_analysis_mcp.sh",
+    "start_creative_rag_mcp.sh",
+    "start_unified_mcp.sh",
+    "start_voice_agent_mcp.sh",
+    "start_deep_researcher_mcp.sh",
+    "start_briefvault_rag_mcp.sh",
+    "start_financial_analyst_mcp.sh",
+    "start_scout_local_mcp.sh",
+    "start_video_rag_mcp.sh",
+    "start_synthetic_data_mcp.sh"
+  ],
+  "next_steps": [
+    "1. Review generated configuration files",
+    "2. Start servers with: ./start_all_servers.sh",
+    "3. Check health with: python pulser_bootstrap.py --health-check",
+    "4. View registry with: cat mcp_registry.json"
+  ]
+}

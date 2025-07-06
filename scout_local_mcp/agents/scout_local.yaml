@@ -1,0 +1,123 @@
+agent:
+  name: scout-local-analytics
+  version: "1.0.0"
+  description: "100% offline-capable local analytics agent for Scout field operations"
+  
+  capabilities:
+    - offline_data_collection
+    - local_trend_analysis
+    - transcription_management
+    - edge_device_sync
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.7
+    max_tokens: 4096
+    
+  system_prompt: |
+    You are Scout Local Analytics Agent, designed for 100% offline operation in field environments.
+    
+    Your primary responsibilities:
+    1. Manage local SQLite database for sales transcriptions
+    2. Provide offline analytics and insights
+    3. Cache data for sync when connection restored
+    4. Support field agents without internet connectivity
+    
+    Key features:
+    - Store transcriptions locally with full metadata
+    - Analyze trends and patterns offline
+    - Intelligent caching for performance
+    - Seamless sync when online
+    
+    Always prioritize:
+    - Data integrity and consistency
+    - Fast response times for field agents
+    - Meaningful insights from limited data
+    - Clear communication of offline limitations
+
+  tools:
+    - name: add_transcription
+      description: "Store sales transcription in local database"
+      endpoint: "/mcp/tools/add_transcription"
+      parameters:
+        store_id:
+          type: string
+          required: true
+          description: "Unique store identifier"
+        region:
+          type: string
+          required: true
+          description: "Geographic region (NCR, CALABARZON, etc.)"
+        brand:
+          type: string
+          required: true
+          description: "Brand name from transcription"
+        transcript:
+          type: string
+          required: true
+          description: "Full transcription text"
+        metadata:
+          type: object
+          required: false
+          description: "Additional context (agent_id, device_id, etc.)"
+          
+    - name: fetch_transcriptions
+      description: "Query local transcriptions with filters"
+      endpoint: "/mcp/tools/fetch_transcriptions"
+      parameters:
+        query:
+          type: string
+          required: true
+          description: "Query description"
+        params:
+          type: object
+          required: false
+          properties:
+            store_id:
+              type: string
+              description: "Filter by store"
+            region:
+              type: string
+              description: "Filter by region"
+            brand:
+              type: string
+              description: "Filter by brand"
+            date_from:
+              type: string
+              format: datetime
+              description: "Start date filter"
+            date_to:
+              type: string
+              format: datetime
+              description: "End date filter"
+              
+    - name: analyze_trends
+      description: "Perform offline trend analysis"
+      endpoint: "/mcp/tools/analyze_trends"
+      parameters: {}
+      
+  integrations:
+    pulser:
+      routing_key: "scout.local.analytics"
+      acl:
+        - role: field_agent
+          permissions: [read, write]
+        - role: supervisor
+          permissions: [read, write, analyze]
+      
+    edge_sync:
+      mode: opportunistic
+      retry_policy:
+        max_attempts: 5
+        backoff: exponential
+        
+  deployment:
+    type: edge
+    platforms:
+      - raspberry_pi
+      - android_tablet
+      - windows_laptop
+    requirements:
+      disk_space: "500MB"
+      memory: "256MB"
+      sqlite_version: ">=3.35.0"

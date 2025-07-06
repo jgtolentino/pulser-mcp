@@ -1,0 +1,90 @@
+---
+name: pulser-mcp-server
+version: 0.1.0
+description: >
+  A unified MCP (Model Context Protocol) server for Pulser agents, enabling integration of tools,
+  APIs, and services through a single JSON-based schema. Designed to work with Claude, GPT-4, DeepSeek, and other LLMs.
+runtime: fastapi
+auth: jwt
+rate_limiting:
+  enabled: true
+  limit: 1000
+  interval: minute
+
+endpoints:
+  - path: /tools/search
+    method: POST
+    description: Run a semantic search via vectorstore
+    input_schema: schemas/search_request.json
+    output_schema: schemas/search_response.json
+  - path: /tools/generate
+    method: POST
+    description: Generate content (text/image/code) from structured input
+    input_schema: schemas/generate_request.json
+    output_schema: schemas/generate_response.json
+  - path: /tools/analyze
+    method: POST
+    description: Analyze uploaded documents or structured data
+    input_schema: schemas/analyze_request.json
+    output_schema: schemas/analyze_response.json
+  - path: /health
+    method: GET
+    description: Health check endpoint
+  - path: /status
+    method: GET
+    description: Current status and capabilities
+  - path: /capabilities
+    method: GET
+    description: Available tools and agents
+  - path: /command
+    method: POST
+    description: Execute commands through the appropriate bridge
+
+adapters:
+  vectorstore:
+    provider: pgvector
+    db_uri: postgres://user:pass@localhost:5432/mcp_db
+  embedding_model:
+    provider: azure_openai
+    model: text-embedding-ada-002
+    endpoint: https://openai.azure.com/v1/embeddings
+  
+models_supported:
+  - name: claude-3-opus
+    provider: anthropic
+  - name: gpt-4-turbo
+    provider: openai
+  - name: deepseek-coder
+    provider: deepseek
+  - name: claude-3-5-sonnet
+    provider: anthropic
+    
+tools_exposed:
+  - name: search
+    description: Vector search from semantic queries
+  - name: generate
+    description: Create summaries, copy, or images from input
+  - name: analyze
+    description: Extract insights from files or structured inputs
+  - name: execute
+    description: Execute commands through appropriate bridges
+
+pulser_agents:
+  - id: claudia
+    role: Strategic Orchestrator
+    capabilities: ["business_strategy", "market_analysis"]
+  - id: maya
+    role: Process Architect
+    capabilities: ["workflow_design", "prd_creation"]
+  - id: kalaw
+    role: Research Indexer
+    capabilities: ["data_storage", "knowledge_management"]
+  - id: echo
+    role: Multimodal Analyzer
+    capabilities: ["ui_ux_testing", "visual_analysis"]
+  - id: surf
+    role: Engineering Expert
+    capabilities: ["complex_engineering", "debugging"]
+  - id: basher
+    role: Systems Automator
+    capabilities: ["shell_commands", "system_automation"]

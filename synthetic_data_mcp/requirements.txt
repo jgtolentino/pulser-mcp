@@ -1,0 +1,27 @@
+fastapi==0.110.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pandas==2.2.0
+numpy==1.24.3
+faker==22.5.1
+pyarrow==14.0.2
+openpyxl==3.1.2
+
+# For data quality validation
+great-expectations==0.18.8
+scipy==1.12.0
+
+# For synthetic data generation
+sdv==1.9.0
+sdmetrics==0.12.1
+
+# For visualization
+matplotlib==3.8.2
+seaborn==0.13.2
+plotly==5.18.0
+
+# For Pulser integration
+fastmcp==0.1.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6

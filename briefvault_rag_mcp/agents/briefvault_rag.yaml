@@ -1,0 +1,216 @@
+agent:
+  name: briefvault-rag-processor
+  version: "1.0.0"
+  description: "Advanced RAG system for complex marketing briefs and creative documents"
+  
+  capabilities:
+    - complex_document_processing
+    - multi_modal_extraction
+    - semantic_search
+    - brief_intelligence
+    - creative_compliance
+    - cross_reference_analysis
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.2
+    max_tokens: 4096
+    
+  system_prompt: |
+    You are the BriefVault RAG Processor, specializing in complex document analysis.
+    
+    Core capabilities:
+    1. Process multi-format documents (PDF, DOCX, PPTX) with layout preservation
+    2. Extract structured intelligence from marketing briefs and strategy documents
+    3. Perform semantic search across document collections
+    4. Analyze brief components: objectives, audience, key messages, requirements
+    5. Check creative compliance against brand guidelines
+    6. Map relationships between briefs, campaigns, and creative assets
+    
+    Document intelligence focus:
+    - Campaign objectives and success metrics
+    - Target audience demographics and psychographics
+    - Key messaging and positioning statements
+    - Creative requirements and deliverables
+    - Brand guideline compliance
+    - Legal and regulatory considerations
+    
+    Processing approach:
+    - Preserve document structure and formatting context
+    - Extract both text and visual elements (images, charts, tables)
+    - Generate multi-modal embeddings for comprehensive search
+    - Maintain document lineage and version tracking
+    - Apply domain-specific entity recognition for marketing content
+
+  tools:
+    - name: ingest_document
+      description: "Process and index complex marketing documents"
+      endpoint: "/mcp/tools/ingest_document"
+      parameters:
+        file_path:
+          type: string
+          required: true
+          description: "Path to document file (PDF, DOCX, PPTX)"
+        document_type:
+          type: string
+          required: false
+          default: "unknown"
+          enum: ["creative_brief", "strategy_doc", "brand_guidelines", "campaign_deck", "research_report", "legal_doc"]
+          description: "Type of document for specialized processing"
+        metadata:
+          type: object
+          required: false
+          description: "Additional metadata (client, campaign, date, etc.)"
+          properties:
+            client:
+              type: string
+              description: "Client or brand name"
+            campaign:
+              type: string
+              description: "Campaign identifier"
+            date:
+              type: string
+              format: date
+              description: "Document date"
+            author:
+              type: string
+              description: "Document author"
+            status:
+              type: string
+              enum: ["draft", "final", "approved"]
+              description: "Document status"
+              
+    - name: search_briefs
+      description: "Semantic search across processed documents"
+      endpoint: "/mcp/tools/search_briefs"
+      parameters:
+        query:
+          type: string
+          required: true
+          description: "Search query (natural language)"
+        filters:
+          type: object
+          required: false
+          description: "Filter criteria"
+          properties:
+            document_type:
+              type: string
+              description: "Filter by document type"
+            client:
+              type: string
+              description: "Filter by client"
+            campaign:
+              type: string
+              description: "Filter by campaign"
+            date_range:
+              type: object
+              properties:
+                start:
+                  type: string
+                  format: date
+                end:
+                  type: string
+                  format: date
+        limit:
+          type: integer
+          required: false
+          default: 10
+          minimum: 1
+          maximum: 50
+          description: "Maximum results to return"
+        include_snippets:
+          type: boolean
+          required: false
+          default: true
+          description: "Include text snippets in results"
+          
+    - name: analyze_brief
+      description: "Extract structured intelligence from marketing briefs"
+      endpoint: "/mcp/tools/analyze_brief"
+      parameters:
+        document_id:
+          type: string
+          required: true
+          description: "ID of processed document"
+        analysis_type:
+          type: array
+          items:
+            type: string
+            enum: ["objectives", "audience", "key_messages", "creative_requirements", "success_metrics", "timeline"]
+          required: false
+          default: ["objectives", "audience", "key_messages"]
+          description: "Types of analysis to perform"
+          
+    - name: upload_document
+      description: "Upload and process new document"
+      endpoint: "/mcp/tools/upload_document"
+      method: "POST"
+      content_type: "multipart/form-data"
+      parameters:
+        file:
+          type: file
+          required: true
+          description: "Document file to upload"
+        document_type:
+          type: string
+          required: false
+          default: "unknown"
+          description: "Type of document"
+        metadata:
+          type: string
+          required: false
+          default: "{}"
+          description: "JSON metadata string"
+          
+  data_sources:
+    document_types:
+      - creative_brief
+      - strategy_document
+      - brand_guidelines
+      - campaign_deck
+      - research_report
+      - legal_document
+      - creative_asset
+      
+    supported_formats:
+      - PDF
+      - DOCX
+      - PPTX
+      - Images (PNG, JPG)
+      
+    extraction_capabilities:
+      - text_content
+      - layout_structure
+      - embedded_images
+      - tables_charts
+      - metadata
+      - annotations
+      
+  intelligence_extraction:
+    brief_components:
+      - campaign_objectives
+      - target_audience
+      - key_messages
+      - creative_requirements
+      - success_metrics
+      - budget_timeline
+      - legal_considerations
+      
+    entity_recognition:
+      - brand_mentions
+      - competitor_references
+      - campaign_elements
+      - creative_assets
+      - team_members
+      - approval_workflows
+      
+  quality_metrics:
+    processing_accuracy: 0.95
+    search_precision: 0.90
+    extraction_completeness: 0.85
+    
+  performance:
+    processing_speed: "2-5 pages/second"
+    search_latency: "<200ms"
+    concurrent_users: 25
+    max_document_size: "100MB"

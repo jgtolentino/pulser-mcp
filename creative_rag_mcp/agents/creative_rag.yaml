@@ -1,0 +1,148 @@
+agent:
+  name: creative-rag-analyst
+  version: "1.0.0"
+  description: "Vector-powered RAG agent for creative asset discovery and analysis"
+  
+  capabilities:
+    - vector_search
+    - asset_ingestion
+    - creative_discovery
+    - campaign_analysis
+    - colpali_embeddings
+    
+  config:
+    model: claude-3-5-sonnet
+    temperature: 0.8
+    max_tokens: 4096
+    
+  system_prompt: |
+    You are the Creative RAG Analyst, specializing in discovering and analyzing creative assets.
+    
+    Your expertise includes:
+    1. Ingesting storyboards, thumbnails, and campaign materials
+    2. Finding similar creative concepts using vector search
+    3. Analyzing campaign effectiveness patterns
+    4. Discovering creative references from web sources
+    
+    Key responsibilities:
+    - Index creative assets with rich metadata
+    - Enable semantic search across visual content
+    - Track campaign performance indicators
+    - Suggest similar successful campaigns
+    
+    When searching:
+    - Use vector similarity for conceptual matches
+    - Apply filters for brand/campaign constraints
+    - Combine web search for external inspiration
+    - Provide relevance scores and explanations
+
+  tools:
+    - name: ingest_asset
+      description: "Add creative asset to vector database"
+      endpoint: "/mcp/tools/ingest_asset"
+      parameters:
+        asset_id:
+          type: string
+          required: true
+          description: "Unique identifier for asset"
+        asset_type:
+          type: string
+          required: true
+          enum: ["storyboard", "thumbnail", "video_frame", "creative_brief"]
+          description: "Type of creative asset"
+        brand:
+          type: string
+          required: true
+          description: "Brand name"
+        campaign:
+          type: string
+          required: false
+          description: "Campaign identifier"
+        metadata:
+          type: object
+          required: false
+          description: "Additional metadata (awards, metrics, tags)"
+        text_content:
+          type: string
+          required: false
+          description: "Text description or transcript"
+        image_url:
+          type: string
+          required: false
+          description: "URL to image asset"
+          
+    - name: search_vector
+      description: "Search assets using semantic similarity"
+      endpoint: "/mcp/tools/search_vector"
+      parameters:
+        query:
+          type: string
+          required: true
+          description: "Search query (text or concept)"
+        query_type:
+          type: string
+          required: false
+          default: "text"
+          enum: ["text", "image", "hybrid"]
+          description: "Type of query"
+        top_k:
+          type: integer
+          required: false
+          default: 10
+          description: "Number of results"
+        filters:
+          type: object
+          required: false
+          description: "Filter by brand, campaign, type"
+          
+    - name: search_web
+      description: "Find creative references online"
+      endpoint: "/mcp/tools/search_web"
+      parameters:
+        query:
+          type: string
+          required: true
+          description: "Search query"
+        domains:
+          type: array
+          items:
+            type: string
+          required: false
+          description: "Limit to specific domains"
+        max_results:
+          type: integer
+          required: false
+          default: 10
+          description: "Maximum results"
+          
+  integrations:
+    qdrant:
+      host: localhost
+      port: 6333
+      collection: creative_assets
+      embedding_model: colpali
+      
+    pulser:
+      routing_key: "creative.rag.search"
+      acl:
+        - role: creative_director
+          permissions: [read, write, analyze]
+        - role: account_manager
+          permissions: [read, search]
+          
+    gagambi:
+      sync_awards: true
+      warc_import: true
+      
+  performance:
+    cache_ttl: 3600
+    max_embedding_batch: 32
+    similarity_threshold: 0.75
+    
+  deployment:
+    requires:
+      - qdrant_server
+      - colpali_model
+    resources:
+      memory: "4GB"
+      gpu: "optional"

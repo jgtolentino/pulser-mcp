@@ -1,0 +1,1943 @@
+{
+  "created_at": "2025-07-06T14:59:42.394571",
+  "version": "1.0.0",
+  "total_servers": 12,
+  "servers": {
+    "slideforge_mcp": {
+      "name": "slideforge_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/slideforge_mcp",
+      "discovered_at": "2025-07-06T14:59:42.287769",
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/slideforge_mcp/agents/feedback.agent.yaml",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/slideforge_mcp/README.md",
+      "config_hash": "0b89c67a62ec060d9361fe90e13df08f",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8000/health",
+      "api_endpoint": "http://localhost:8000",
+      "registered_at": "2025-07-06T14:59:42.394580",
+      "category": "general",
+      "priority": "medium"
+    },
+    "shared_memory_mcp": {
+      "name": "shared_memory_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/shared_memory_mcp",
+      "discovered_at": "2025-07-06T14:59:42.296276",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/shared_memory_mcp/src/memory_server.py",
+      "language": "python",
+      "port": 5700,
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/shared_memory_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.110.0",
+        "uvicorn[standard]==0.27.0",
+        "pydantic==2.5.3",
+        "neo4j==5.16.0",
+        "redis==5.0.1",
+        "numpy==1.24.3",
+        "scikit-learn==1.4.0",
+        "sentence-transformers==2.3.1",
+        "torch==2.1.2",
+        "networkx==3.2.1",
+        "pandas==2.2.0",
+        "fastmcp==0.1.0",
+        "prometheus-client==0.19.0"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/shared_memory_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/shared_memory_mcp/README.md",
+      "config_hash": "29653992de400052dd07856b74c22c17",
+      "status": "registered",
+      "health_endpoint": "http://localhost:5700/health",
+      "api_endpoint": "http://localhost:5700",
+      "registered_at": "2025-07-06T14:59:42.394584",
+      "category": "infrastructure",
+      "priority": "high"
+    },
+    "audio_analysis_mcp": {
+      "name": "audio_analysis_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/audio_analysis_mcp",
+      "discovered_at": "2025-07-06T14:59:42.296867",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/audio_analysis_mcp/src/audio_server.py",
+      "language": "python",
+      "port": 8009,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/audio_analysis_mcp/agents/audio_analysis.yaml",
+      "agent_name": "audio-analysis-call-centre-qa",
+      "description": "Advanced audio analysis system for call quality assessment, sentiment analysis, and performance insights",
+      "version": "1.0.0",
+      "capabilities": [
+        "audio_quality_assessment",
+        "speech_transcription",
+        "sentiment_analysis",
+        "call_centre_qa",
+        "customer_satisfaction_analysis",
+        "audio_search_indexing"
+      ],
+      "tools": [
+        {
+          "name": "analyze_audio",
+          "description": "Comprehensive audio analysis for call centre QA",
+          "endpoint": "/mcp/tools/analyze_audio",
+          "parameters": {
+            "audio_path": {
+              "type": "string",
+              "required": true,
+              "description": "Path to audio file for analysis"
+            },
+            "analysis_type": {
+              "type": "string",
+              "required": false,
+              "default": "comprehensive",
+              "enum": [
+                "comprehensive",
+                "quality_only",
+                "sentiment_only",
+                "transcription_only"
+              ],
+              "description": "Type of analysis to perform"
+            },
+            "speaker_detection": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Enable speaker detection and separation"
+            },
+            "language": {
+              "type": "string",
+              "required": false,
+              "default": "en-US",
+              "description": "Language for speech recognition"
+            },
+            "metadata": {
+              "type": "object",
+              "required": false,
+              "description": "Additional metadata for the audio",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "Call centre agent identifier"
+                },
+                "customer_id": {
+                  "type": "string",
+                  "description": "Customer identifier"
+                },
+                "call_type": {
+                  "type": "string",
+                  "description": "Type of call (support, sales, complaint)"
+                },
+                "department": {
+                  "type": "string",
+                  "description": "Department handling the call"
+                },
+                "date": {
+                  "type": "string",
+                  "description": "Date of the call"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "assess_quality",
+          "description": "Assess call quality against specific metrics and guidelines",
+          "endpoint": "/mcp/tools/assess_quality",
+          "parameters": {
+            "audio_id": {
+              "type": "string",
+              "required": true,
+              "description": "Audio ID from previous analysis"
+            },
+            "quality_metrics": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "clarity",
+                  "volume",
+                  "background_noise",
+                  "interruptions",
+                  "pace"
+                ]
+              },
+              "required": false,
+              "default": [
+                "clarity",
+                "volume",
+                "background_noise",
+                "interruptions",
+                "pace"
+              ],
+              "description": "Quality metrics to assess"
+            },
+            "agent_guidelines": {
+              "type": "object",
+              "required": false,
+              "description": "Agent performance guidelines and thresholds",
+              "properties": {
+                "clarity_threshold": {
+                  "type": "number",
+                  "description": "Minimum clarity score (0-100)"
+                },
+                "pace_target": {
+                  "type": "number",
+                  "description": "Target words per minute"
+                },
+                "interruption_limit": {
+                  "type": "number",
+                  "description": "Maximum allowed interruptions"
+                },
+                "sentiment_target": {
+                  "type": "number",
+                  "description": "Target sentiment score"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "analyze_sentiment",
+          "description": "Analyze sentiment and customer satisfaction indicators",
+          "endpoint": "/mcp/tools/analyze_sentiment",
+          "parameters": {
+            "audio_id": {
+              "type": "string",
+              "required": true,
+              "description": "Audio ID from previous analysis"
+            },
+            "analysis_segments": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Enable segment-level sentiment analysis"
+            },
+            "customer_satisfaction_focus": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Focus on customer satisfaction indicators"
+            }
+          }
+        },
+        {
+          "name": "search_audio",
+          "description": "Search through analyzed audio files using various criteria",
+          "endpoint": "/mcp/tools/search_audio",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "required": true,
+              "description": "Search query (keywords, phrases, or semantic description)"
+            },
+            "search_type": {
+              "type": "string",
+              "required": false,
+              "default": "semantic",
+              "enum": [
+                "semantic",
+                "keyword",
+                "sentiment",
+                "quality_score"
+              ],
+              "description": "Type of search to perform"
+            },
+            "filters": {
+              "type": "object",
+              "required": false,
+              "description": "Search filters",
+              "properties": {
+                "agent_id": {
+                  "type": "string",
+                  "description": "Filter by agent"
+                },
+                "call_type": {
+                  "type": "string",
+                  "description": "Filter by call type"
+                },
+                "quality_score_min": {
+                  "type": "number",
+                  "description": "Minimum quality score"
+                },
+                "sentiment_score_min": {
+                  "type": "number",
+                  "description": "Minimum sentiment score"
+                },
+                "date_range": {
+                  "type": "object",
+                  "description": "Date range filter",
+                  "properties": {
+                    "start_date": {
+                      "type": "string",
+                      "description": "Start date (ISO format)"
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "description": "End date (ISO format)"
+                    }
+                  }
+                }
+              }
+            },
+            "limit": {
+              "type": "integer",
+              "required": false,
+              "default": 10,
+              "description": "Maximum number of results"
+            }
+          }
+        },
+        {
+          "name": "upload_audio",
+          "description": "Upload and analyze audio file",
+          "endpoint": "/mcp/tools/upload_audio",
+          "parameters": {
+            "file": {
+              "type": "file",
+              "required": true,
+              "description": "Audio file to upload"
+            },
+            "analysis_type": {
+              "type": "string",
+              "required": false,
+              "default": "comprehensive",
+              "description": "Type of analysis to perform"
+            },
+            "metadata": {
+              "type": "string",
+              "required": false,
+              "default": "{}",
+              "description": "JSON string of metadata"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/audio_analysis_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.104.1",
+        "uvicorn==0.24.0",
+        "pydantic==2.5.0",
+        "qdrant-client==1.6.9",
+        "sentence-transformers==2.2.2",
+        "librosa==0.10.1",
+        "numpy==1.24.3",
+        "scipy==1.11.4",
+        "soundfile==0.12.1",
+        "speechrecognition==3.10.0",
+        "textblob==0.17.1",
+        "matplotlib==3.8.2",
+        "seaborn==0.13.0",
+        "pyaudio==0.2.11",
+        "python-multipart==0.0.6",
+        "aiofiles==23.2.1"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/audio_analysis_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/audio_analysis_mcp/README.md",
+      "config_hash": "b029add2c1268d8212eb05bf291c4cb1",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8009/health",
+      "api_endpoint": "http://localhost:8009",
+      "registered_at": "2025-07-06T14:59:42.394587",
+      "category": "quality",
+      "priority": "low"
+    },
+    "creative_rag_mcp": {
+      "name": "creative_rag_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/creative_rag_mcp",
+      "discovered_at": "2025-07-06T14:59:42.310146",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/creative_rag_mcp/src/rag_server.py",
+      "language": "python",
+      "port": 8001,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/creative_rag_mcp/agents/creative_rag.yaml",
+      "agent_name": "creative-rag-analyst",
+      "description": "Vector-powered RAG agent for creative asset discovery and analysis",
+      "version": "1.0.0",
+      "capabilities": [
+        "vector_search",
+        "asset_ingestion",
+        "creative_discovery",
+        "campaign_analysis",
+        "colpali_embeddings"
+      ],
+      "tools": [
+        {
+          "name": "ingest_asset",
+          "description": "Add creative asset to vector database",
+          "endpoint": "/mcp/tools/ingest_asset",
+          "parameters": {
+            "asset_id": {
+              "type": "string",
+              "required": true,
+              "description": "Unique identifier for asset"
+            },
+            "asset_type": {
+              "type": "string",
+              "required": true,
+              "enum": [
+                "storyboard",
+                "thumbnail",
+                "video_frame",
+                "creative_brief"
+              ],
+              "description": "Type of creative asset"
+            },
+            "brand": {
+              "type": "string",
+              "required": true,
+              "description": "Brand name"
+            },
+            "campaign": {
+              "type": "string",
+              "required": false,
+              "description": "Campaign identifier"
+            },
+            "metadata": {
+              "type": "object",
+              "required": false,
+              "description": "Additional metadata (awards, metrics, tags)"
+            },
+            "text_content": {
+              "type": "string",
+              "required": false,
+              "description": "Text description or transcript"
+            },
+            "image_url": {
+              "type": "string",
+              "required": false,
+              "description": "URL to image asset"
+            }
+          }
+        },
+        {
+          "name": "search_vector",
+          "description": "Search assets using semantic similarity",
+          "endpoint": "/mcp/tools/search_vector",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "required": true,
+              "description": "Search query (text or concept)"
+            },
+            "query_type": {
+              "type": "string",
+              "required": false,
+              "default": "text",
+              "enum": [
+                "text",
+                "image",
+                "hybrid"
+              ],
+              "description": "Type of query"
+            },
+            "top_k": {
+              "type": "integer",
+              "required": false,
+              "default": 10,
+              "description": "Number of results"
+            },
+            "filters": {
+              "type": "object",
+              "required": false,
+              "description": "Filter by brand, campaign, type"
+            }
+          }
+        },
+        {
+          "name": "search_web",
+          "description": "Find creative references online",
+          "endpoint": "/mcp/tools/search_web",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "required": true,
+              "description": "Search query"
+            },
+            "domains": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Limit to specific domains"
+            },
+            "max_results": {
+              "type": "integer",
+              "required": false,
+              "default": 10,
+              "description": "Maximum results"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/creative_rag_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.110.0",
+        "uvicorn[standard]==0.27.0",
+        "pydantic==2.5.3",
+        "qdrant-client==1.7.3",
+        "numpy==1.24.3",
+        "pillow==10.2.0",
+        "httpx==0.26.0",
+        "python-multipart==0.0.9",
+        "sentence-transformers==2.3.1",
+        "transformers==4.37.2",
+        "beautifulsoup4==4.12.3",
+        "aiohttp==3.9.3",
+        "fastmcp==0.1.0",
+        "llama-index==0.9.48"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/creative_rag_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/creative_rag_mcp/README.md",
+      "config_hash": "8d8a33e71b8ebdef980e2095a6061436",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8001/health",
+      "api_endpoint": "http://localhost:8001",
+      "registered_at": "2025-07-06T14:59:42.394590",
+      "category": "knowledge",
+      "priority": "high"
+    },
+    "unified_mcp": {
+      "name": "unified_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/unified_mcp",
+      "discovered_at": "2025-07-06T14:59:42.322227",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/unified_mcp/src/unified_server.py",
+      "language": "python",
+      "port": 8004,
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/unified_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.110.0",
+        "uvicorn[standard]==0.27.0",
+        "pydantic==2.5.3",
+        "mindsdb-sdk==1.0.5",
+        "pandas==2.2.0",
+        "numpy==1.24.3",
+        "sqlalchemy==2.0.25",
+        "psycopg2-binary==2.9.9",
+        "redis==5.0.1",
+        "httpx==0.26.0",
+        "slack-sdk==3.26.2",
+        "google-api-python-client==2.116.0",
+        "google-auth-httplib2==0.2.0",
+        "google-auth-oauthlib==1.2.0",
+        "PyGithub==2.1.1",
+        "scikit-learn==1.4.0",
+        "statsmodels==0.14.1",
+        "matplotlib==3.8.2",
+        "plotly==5.18.0",
+        "fastmcp==0.1.0"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/unified_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/unified_mcp/README.md",
+      "config_hash": "65b227fd76486a05b3ab78726aa914a0",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8004/health",
+      "api_endpoint": "http://localhost:8004",
+      "registered_at": "2025-07-06T14:59:42.394592",
+      "category": "general",
+      "priority": "medium"
+    },
+    "voice_agent_mcp": {
+      "name": "voice_agent_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/voice_agent_mcp",
+      "discovered_at": "2025-07-06T14:59:42.323212",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/voice_agent_mcp/src/voice_server.py",
+      "language": "python",
+      "port": 8003,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/voice_agent_mcp/agents/arkie_voice.yaml",
+      "agent_name": "arkie-voice-sdr",
+      "description": "AI-powered voice agent for automated sales development and call handling",
+      "version": "1.0.0",
+      "capabilities": [
+        "real_time_voice",
+        "speech_to_text",
+        "call_analytics",
+        "contact_discovery",
+        "auto_followup",
+        "sentiment_tracking"
+      ],
+      "tools": [
+        {
+          "name": "start_voice_session",
+          "description": "Initialize a new voice call session",
+          "endpoint": "/mcp/tools/start_voice_session",
+          "parameters": {
+            "session_id": {
+              "type": "string",
+              "required": false,
+              "description": "Unique session identifier"
+            },
+            "participant_name": {
+              "type": "string",
+              "required": true,
+              "description": "Name of the call participant"
+            },
+            "context": {
+              "type": "object",
+              "required": false,
+              "description": "Call context (lead info, purpose, etc.)",
+              "properties": {
+                "lead_id": {
+                  "type": "string"
+                },
+                "company": {
+                  "type": "string"
+                },
+                "purpose": {
+                  "type": "string",
+                  "enum": [
+                    "discovery",
+                    "demo",
+                    "follow_up",
+                    "support"
+                  ]
+                }
+              }
+            },
+            "language": {
+              "type": "string",
+              "required": false,
+              "default": "en",
+              "description": "Preferred language"
+            }
+          }
+        },
+        {
+          "name": "transcribe_audio",
+          "description": "Convert speech to text with analytics",
+          "endpoint": "/mcp/tools/transcribe_audio",
+          "parameters": {
+            "audio_url": {
+              "type": "string",
+              "required": true,
+              "description": "URL of audio recording"
+            },
+            "session_id": {
+              "type": "string",
+              "required": false,
+              "description": "Link to voice session"
+            },
+            "speaker_labels": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Identify different speakers"
+            }
+          }
+        },
+        {
+          "name": "analyze_call",
+          "description": "Extract insights from call transcripts",
+          "endpoint": "/mcp/tools/analyze_call",
+          "parameters": {
+            "session_id": {
+              "type": "string",
+              "required": true,
+              "description": "Session to analyze"
+            },
+            "analysis_type": {
+              "type": "string",
+              "required": false,
+              "default": "summary",
+              "enum": [
+                "sentiment",
+                "summary",
+                "action_items"
+              ],
+              "description": "Type of analysis"
+            }
+          }
+        },
+        {
+          "name": "crawl_for_contacts",
+          "description": "Find contacts from company websites",
+          "endpoint": "/mcp/tools/crawl_for_contacts",
+          "parameters": {
+            "url": {
+              "type": "string",
+              "required": true,
+              "description": "Company website URL"
+            },
+            "extract_contacts": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Extract contact details"
+            },
+            "max_depth": {
+              "type": "integer",
+              "required": false,
+              "default": 2,
+              "description": "Crawl depth limit"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/voice_agent_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.110.0",
+        "uvicorn[standard]==0.27.0",
+        "pydantic==2.5.3",
+        "websockets==12.0",
+        "livekit==0.11.1",
+        "livekit-api==0.4.0",
+        "assemblyai==0.28.0",
+        "supabase==2.3.4",
+        "httpx==0.26.0",
+        "firecrawl-py==0.0.16",
+        "pyaudio==0.2.14",
+        "soundfile==0.12.1",
+        "numpy==1.24.3",
+        "scipy==1.12.0",
+        "redis==5.0.1",
+        "celery==5.3.6",
+        "simple-salesforce==1.12.5",
+        "hubspot-api-client==8.2.1",
+        "fastmcp==0.1.0",
+        "qwen-cpp==0.1.0"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/voice_agent_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/voice_agent_mcp/README.md",
+      "config_hash": "d19c3f92117369a20b6a90a4147a5bfc",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8003/health",
+      "api_endpoint": "http://localhost:8003",
+      "registered_at": "2025-07-06T14:59:42.394594",
+      "category": "interaction",
+      "priority": "high"
+    },
+    "deep_researcher_mcp": {
+      "name": "deep_researcher_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/deep_researcher_mcp",
+      "discovered_at": "2025-07-06T14:59:42.332860",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/deep_researcher_mcp/src/researcher_server.py",
+      "language": "python",
+      "port": 8007,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/deep_researcher_mcp/agents/deep_researcher.yaml",
+      "agent_name": "deep-researcher-intelligence",
+      "description": "Advanced competitive intelligence and market research automation system",
+      "version": "1.0.0",
+      "capabilities": [
+        "competitive_analysis",
+        "market_intelligence",
+        "brand_monitoring",
+        "trend_analysis",
+        "research_automation",
+        "intelligence_reporting"
+      ],
+      "tools": [
+        {
+          "name": "conduct_research",
+          "description": "Conduct comprehensive research on specified topic",
+          "endpoint": "/mcp/tools/conduct_research",
+          "parameters": {
+            "topic": {
+              "type": "string",
+              "required": true,
+              "description": "Research topic or question"
+            },
+            "research_type": {
+              "type": "string",
+              "required": false,
+              "default": "competitive_analysis",
+              "enum": [
+                "competitive_analysis",
+                "market_trends",
+                "brand_monitoring",
+                "technology_research",
+                "consumer_insights"
+              ],
+              "description": "Type of research to conduct"
+            },
+            "depth": {
+              "type": "string",
+              "required": false,
+              "default": "standard",
+              "enum": [
+                "quick",
+                "standard",
+                "deep"
+              ],
+              "description": "Research depth and thoroughness"
+            },
+            "sources": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "web",
+                  "news",
+                  "social",
+                  "patents",
+                  "financial"
+                ]
+              },
+              "required": false,
+              "default": [
+                "web",
+                "news",
+                "social"
+              ],
+              "description": "Data sources to include"
+            },
+            "filters": {
+              "type": "object",
+              "required": false,
+              "description": "Research filters and constraints",
+              "properties": {
+                "geography": {
+                  "type": "string",
+                  "description": "Geographic focus"
+                },
+                "timeframe": {
+                  "type": "string",
+                  "description": "Time period to analyze"
+                },
+                "industry": {
+                  "type": "string",
+                  "description": "Industry focus"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "analyze_competitors",
+          "description": "Analyze competitive landscape and positioning",
+          "endpoint": "/mcp/tools/analyze_competitors",
+          "parameters": {
+            "brand": {
+              "type": "string",
+              "required": true,
+              "description": "Brand to analyze"
+            },
+            "competitors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "List of competitors to analyze"
+            },
+            "analysis_areas": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "pricing",
+                  "products",
+                  "marketing",
+                  "digital_presence",
+                  "content_strategy",
+                  "partnerships"
+                ]
+              },
+              "required": false,
+              "default": [
+                "pricing",
+                "products",
+                "marketing",
+                "digital_presence"
+              ],
+              "description": "Areas of competitive analysis"
+            },
+            "time_range": {
+              "type": "string",
+              "required": false,
+              "default": "30d",
+              "enum": [
+                "7d",
+                "30d",
+                "90d",
+                "1y"
+              ],
+              "description": "Time range for analysis"
+            }
+          }
+        },
+        {
+          "name": "analyze_trends",
+          "description": "Analyze market trends and emerging patterns",
+          "endpoint": "/mcp/tools/analyze_trends",
+          "parameters": {
+            "industry": {
+              "type": "string",
+              "required": true,
+              "description": "Industry or market to analyze"
+            },
+            "keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Keywords and topics to track"
+            },
+            "time_range": {
+              "type": "string",
+              "required": false,
+              "default": "90d",
+              "enum": [
+                "30d",
+                "90d",
+                "6m",
+                "1y",
+                "2y"
+              ],
+              "description": "Time period for trend analysis"
+            },
+            "geo_focus": {
+              "type": "string",
+              "required": false,
+              "default": "Philippines",
+              "description": "Geographic focus for analysis"
+            }
+          }
+        },
+        {
+          "name": "setup_monitoring",
+          "description": "Setup continuous monitoring for brands/keywords",
+          "endpoint": "/mcp/tools/setup_monitoring",
+          "parameters": {
+            "entities": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": true,
+              "description": "Brands, products, or keywords to monitor"
+            },
+            "monitoring_type": {
+              "type": "string",
+              "required": false,
+              "default": "brand_mentions",
+              "enum": [
+                "brand_mentions",
+                "product_launches",
+                "pricing_changes",
+                "sentiment_tracking",
+                "competitive_moves"
+              ],
+              "description": "Type of monitoring to setup"
+            },
+            "frequency": {
+              "type": "string",
+              "required": false,
+              "default": "daily",
+              "enum": [
+                "hourly",
+                "daily",
+                "weekly"
+              ],
+              "description": "Monitoring frequency"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/deep_researcher_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.104.1",
+        "uvicorn==0.24.0",
+        "pydantic==2.5.0",
+        "qdrant-client==1.6.9",
+        "sentence-transformers==2.2.2",
+        "aiohttp==3.9.1",
+        "requests==2.31.0",
+        "beautifulsoup4==4.12.2",
+        "pandas==2.1.4",
+        "numpy==1.24.3",
+        "asyncio==3.4.3",
+        "lxml==4.9.3",
+        "html5lib==1.1",
+        "selenium==4.15.2",
+        "feedparser==6.0.10",
+        "python-dateutil==2.8.2",
+        "textblob==0.17.1",
+        "nltk==3.8.1"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/deep_researcher_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/deep_researcher_mcp/README.md",
+      "config_hash": "e6530efcfafc1bbb46a602cf1e01d1c2",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8007/health",
+      "api_endpoint": "http://localhost:8007",
+      "registered_at": "2025-07-06T14:59:42.394597",
+      "category": "intelligence",
+      "priority": "medium"
+    },
+    "briefvault_rag_mcp": {
+      "name": "briefvault_rag_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/briefvault_rag_mcp",
+      "discovered_at": "2025-07-06T14:59:42.346505",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/briefvault_rag_mcp/src/briefvault_server.py",
+      "language": "python",
+      "port": 8006,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/briefvault_rag_mcp/agents/briefvault_rag.yaml",
+      "agent_name": "briefvault-rag-processor",
+      "description": "Advanced RAG system for complex marketing briefs and creative documents",
+      "version": "1.0.0",
+      "capabilities": [
+        "complex_document_processing",
+        "multi_modal_extraction",
+        "semantic_search",
+        "brief_intelligence",
+        "creative_compliance",
+        "cross_reference_analysis"
+      ],
+      "tools": [
+        {
+          "name": "ingest_document",
+          "description": "Process and index complex marketing documents",
+          "endpoint": "/mcp/tools/ingest_document",
+          "parameters": {
+            "file_path": {
+              "type": "string",
+              "required": true,
+              "description": "Path to document file (PDF, DOCX, PPTX)"
+            },
+            "document_type": {
+              "type": "string",
+              "required": false,
+              "default": "unknown",
+              "enum": [
+                "creative_brief",
+                "strategy_doc",
+                "brand_guidelines",
+                "campaign_deck",
+                "research_report",
+                "legal_doc"
+              ],
+              "description": "Type of document for specialized processing"
+            },
+            "metadata": {
+              "type": "object",
+              "required": false,
+              "description": "Additional metadata (client, campaign, date, etc.)",
+              "properties": {
+                "client": {
+                  "type": "string",
+                  "description": "Client or brand name"
+                },
+                "campaign": {
+                  "type": "string",
+                  "description": "Campaign identifier"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Document date"
+                },
+                "author": {
+                  "type": "string",
+                  "description": "Document author"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "draft",
+                    "final",
+                    "approved"
+                  ],
+                  "description": "Document status"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "search_briefs",
+          "description": "Semantic search across processed documents",
+          "endpoint": "/mcp/tools/search_briefs",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "required": true,
+              "description": "Search query (natural language)"
+            },
+            "filters": {
+              "type": "object",
+              "required": false,
+              "description": "Filter criteria",
+              "properties": {
+                "document_type": {
+                  "type": "string",
+                  "description": "Filter by document type"
+                },
+                "client": {
+                  "type": "string",
+                  "description": "Filter by client"
+                },
+                "campaign": {
+                  "type": "string",
+                  "description": "Filter by campaign"
+                },
+                "date_range": {
+                  "type": "object",
+                  "properties": {
+                    "start": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "end": {
+                      "type": "string",
+                      "format": "date"
+                    }
+                  }
+                }
+              }
+            },
+            "limit": {
+              "type": "integer",
+              "required": false,
+              "default": 10,
+              "minimum": 1,
+              "maximum": 50,
+              "description": "Maximum results to return"
+            },
+            "include_snippets": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Include text snippets in results"
+            }
+          }
+        },
+        {
+          "name": "analyze_brief",
+          "description": "Extract structured intelligence from marketing briefs",
+          "endpoint": "/mcp/tools/analyze_brief",
+          "parameters": {
+            "document_id": {
+              "type": "string",
+              "required": true,
+              "description": "ID of processed document"
+            },
+            "analysis_type": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "objectives",
+                  "audience",
+                  "key_messages",
+                  "creative_requirements",
+                  "success_metrics",
+                  "timeline"
+                ]
+              },
+              "required": false,
+              "default": [
+                "objectives",
+                "audience",
+                "key_messages"
+              ],
+              "description": "Types of analysis to perform"
+            }
+          }
+        },
+        {
+          "name": "upload_document",
+          "description": "Upload and process new document",
+          "endpoint": "/mcp/tools/upload_document",
+          "method": "POST",
+          "content_type": "multipart/form-data",
+          "parameters": {
+            "file": {
+              "type": "file",
+              "required": true,
+              "description": "Document file to upload"
+            },
+            "document_type": {
+              "type": "string",
+              "required": false,
+              "default": "unknown",
+              "description": "Type of document"
+            },
+            "metadata": {
+              "type": "string",
+              "required": false,
+              "default": "{}",
+              "description": "JSON metadata string"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/briefvault_rag_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.104.1",
+        "uvicorn==0.24.0",
+        "pydantic==2.5.0",
+        "qdrant-client==1.6.9",
+        "sentence-transformers==2.2.2",
+        "PyMuPDF==1.23.8",
+        "python-docx==1.1.0",
+        "python-pptx==0.6.22",
+        "Pillow==10.1.0",
+        "pytesseract==0.3.10",
+        "pandas==2.1.4",
+        "transformers==4.36.0",
+        "torch==2.1.1",
+        "python-multipart==0.0.6",
+        "aiofiles==0.24.0",
+        "numpy==1.24.3"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/briefvault_rag_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/briefvault_rag_mcp/README.md",
+      "config_hash": "3f3bbcccc85537c785e0756906f1c46f",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8006/health",
+      "api_endpoint": "http://localhost:8006",
+      "registered_at": "2025-07-06T14:59:42.394599",
+      "category": "knowledge",
+      "priority": "high"
+    },
+    "financial_analyst_mcp": {
+      "name": "financial_analyst_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/financial_analyst_mcp",
+      "discovered_at": "2025-07-06T14:59:42.356512",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/financial_analyst_mcp/src/financial_server.py",
+      "language": "python",
+      "port": 8002,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/financial_analyst_mcp/agents/financial_analyst.yaml",
+      "agent_name": "marketing-kpi-analyst",
+      "description": "AI-powered financial analyst for marketing KPI forecasting and ROI analysis",
+      "version": "1.0.0",
+      "capabilities": [
+        "kpi_analysis",
+        "revenue_forecasting",
+        "roi_calculation",
+        "trend_detection",
+        "code_generation",
+        "visualization"
+      ],
+      "tools": [
+        {
+          "name": "analyze_kpis",
+          "description": "Analyze marketing KPIs with financial metrics",
+          "endpoint": "/mcp/tools/analyze_kpis",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "required": true,
+              "description": "Natural language analysis request"
+            },
+            "data_source": {
+              "type": "string",
+              "required": false,
+              "default": "supabase",
+              "enum": [
+                "supabase",
+                "yfinance",
+                "csv"
+              ],
+              "description": "Data source for analysis"
+            },
+            "timeframe": {
+              "type": "string",
+              "required": false,
+              "default": "1M",
+              "enum": [
+                "1D",
+                "1W",
+                "1M",
+                "3M",
+                "1Y"
+              ],
+              "description": "Analysis timeframe"
+            },
+            "metrics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false,
+              "default": [
+                "revenue",
+                "engagement",
+                "conversion"
+              ],
+              "description": "Metrics to analyze"
+            },
+            "brands": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Filter by specific brands"
+            }
+          }
+        },
+        {
+          "name": "generate_code",
+          "description": "Generate Python code for custom analysis",
+          "endpoint": "/mcp/tools/generate_code",
+          "parameters": {
+            "analysis_type": {
+              "type": "string",
+              "required": true,
+              "enum": [
+                "forecast",
+                "trend",
+                "comparison",
+                "correlation"
+              ],
+              "description": "Type of analysis code to generate"
+            },
+            "parameters": {
+              "type": "object",
+              "required": true,
+              "description": "Parameters for code generation",
+              "properties": {
+                "data_loading": {
+                  "type": "string",
+                  "description": "Code to load data"
+                },
+                "metric": {
+                  "type": "string",
+                  "description": "Primary metric to analyze"
+                },
+                "periods": {
+                  "type": "integer",
+                  "description": "Forecast periods"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Chart title"
+                }
+              }
+            },
+            "output_format": {
+              "type": "string",
+              "required": false,
+              "default": "plot",
+              "enum": [
+                "plot",
+                "data",
+                "report"
+              ],
+              "description": "Desired output format"
+            }
+          }
+        },
+        {
+          "name": "execute_code",
+          "description": "Execute analysis code safely",
+          "endpoint": "/mcp/tools/execute_code",
+          "parameters": {
+            "code": {
+              "type": "string",
+              "required": true,
+              "description": "Python code to execute"
+            },
+            "timeout": {
+              "type": "integer",
+              "required": false,
+              "default": 30,
+              "description": "Execution timeout in seconds"
+            },
+            "sandbox": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Use Docker sandbox for execution"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/financial_analyst_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.110.0",
+        "uvicorn[standard]==0.27.0",
+        "pydantic==2.5.3",
+        "pandas==2.2.0",
+        "numpy==1.24.3",
+        "matplotlib==3.8.2",
+        "seaborn==0.13.2",
+        "yfinance==0.2.36",
+        "scikit-learn==1.4.0",
+        "crewai==0.28.0",
+        "docker==7.0.0",
+        "statsmodels==0.14.1",
+        "prophet==1.1.5",
+        "plotly==5.18.0",
+        "psycopg2-binary==2.9.9",
+        "sqlalchemy==2.0.25",
+        "fastmcp==0.1.0",
+        "openbb-terminal==3.0.0"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/financial_analyst_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/financial_analyst_mcp/README.md",
+      "config_hash": "3bc129994b41675f8f8f0f934a79cb69",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8002/health",
+      "api_endpoint": "http://localhost:8002",
+      "registered_at": "2025-07-06T14:59:42.394602",
+      "category": "analytics",
+      "priority": "medium"
+    },
+    "scout_local_mcp": {
+      "name": "scout_local_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/scout_local_mcp",
+      "discovered_at": "2025-07-06T14:59:42.365317",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/scout_local_mcp/src/server.py",
+      "language": "python",
+      "port": 8000,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/scout_local_mcp/agents/scout_local.yaml",
+      "agent_name": "scout-local-analytics",
+      "description": "100% offline-capable local analytics agent for Scout field operations",
+      "version": "1.0.0",
+      "capabilities": [
+        "offline_data_collection",
+        "local_trend_analysis",
+        "transcription_management",
+        "edge_device_sync"
+      ],
+      "tools": [
+        {
+          "name": "add_transcription",
+          "description": "Store sales transcription in local database",
+          "endpoint": "/mcp/tools/add_transcription",
+          "parameters": {
+            "store_id": {
+              "type": "string",
+              "required": true,
+              "description": "Unique store identifier"
+            },
+            "region": {
+              "type": "string",
+              "required": true,
+              "description": "Geographic region (NCR, CALABARZON, etc.)"
+            },
+            "brand": {
+              "type": "string",
+              "required": true,
+              "description": "Brand name from transcription"
+            },
+            "transcript": {
+              "type": "string",
+              "required": true,
+              "description": "Full transcription text"
+            },
+            "metadata": {
+              "type": "object",
+              "required": false,
+              "description": "Additional context (agent_id, device_id, etc.)"
+            }
+          }
+        },
+        {
+          "name": "fetch_transcriptions",
+          "description": "Query local transcriptions with filters",
+          "endpoint": "/mcp/tools/fetch_transcriptions",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "required": true,
+              "description": "Query description"
+            },
+            "params": {
+              "type": "object",
+              "required": false,
+              "properties": {
+                "store_id": {
+                  "type": "string",
+                  "description": "Filter by store"
+                },
+                "region": {
+                  "type": "string",
+                  "description": "Filter by region"
+                },
+                "brand": {
+                  "type": "string",
+                  "description": "Filter by brand"
+                },
+                "date_from": {
+                  "type": "string",
+                  "format": "datetime",
+                  "description": "Start date filter"
+                },
+                "date_to": {
+                  "type": "string",
+                  "format": "datetime",
+                  "description": "End date filter"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "analyze_trends",
+          "description": "Perform offline trend analysis",
+          "endpoint": "/mcp/tools/analyze_trends",
+          "parameters": {}
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/scout_local_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.110.0",
+        "uvicorn[standard]==0.27.0",
+        "pydantic==2.5.3",
+        "sqlite3-to-mysql==2.1.7",
+        "python-multipart==0.0.9",
+        "aiofiles==23.2.1",
+        "httpx==0.26.0",
+        "fastmcp==0.1.0",
+        "llama-index==0.9.48",
+        "sqlalchemy==2.0.25",
+        "alembic==1.13.1"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/scout_local_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/scout_local_mcp/README.md",
+      "config_hash": "5d255c549cf4cdf71b8fae5ecce573a2",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8000/health",
+      "api_endpoint": "http://localhost:8000",
+      "registered_at": "2025-07-06T14:59:42.394603",
+      "category": "analytics",
+      "priority": "high"
+    },
+    "video_rag_mcp": {
+      "name": "video_rag_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/video_rag_mcp",
+      "discovered_at": "2025-07-06T14:59:42.371574",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/video_rag_mcp/src/video_server.py",
+      "language": "python",
+      "port": 8008,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/video_rag_mcp/agents/video_rag.yaml",
+      "agent_name": "video-rag-creative-diagnostics",
+      "description": "Advanced video analysis system for creative performance, brand compliance, and content intelligence",
+      "version": "1.0.0",
+      "capabilities": [
+        "video_content_analysis",
+        "frame_extraction",
+        "audio_transcription",
+        "brand_compliance_checking",
+        "creative_performance_insights",
+        "multi_modal_search"
+      ],
+      "tools": [
+        {
+          "name": "analyze_video",
+          "description": "Analyze video for content, compliance, and performance insights",
+          "endpoint": "/mcp/tools/analyze_video",
+          "parameters": {
+            "video_path": {
+              "type": "string",
+              "required": true,
+              "description": "Path to video file for analysis"
+            },
+            "analysis_type": {
+              "type": "string",
+              "required": false,
+              "default": "comprehensive",
+              "enum": [
+                "comprehensive",
+                "brand_compliance",
+                "performance_analysis",
+                "content_summary"
+              ],
+              "description": "Type of analysis to perform"
+            },
+            "extract_audio": {
+              "type": "boolean",
+              "required": false,
+              "default": true,
+              "description": "Whether to extract and analyze audio"
+            },
+            "frame_sampling_rate": {
+              "type": "integer",
+              "required": false,
+              "default": 30,
+              "description": "Extract frame every N frames"
+            },
+            "metadata": {
+              "type": "object",
+              "required": false,
+              "description": "Additional metadata for the video",
+              "properties": {
+                "campaign": {
+                  "type": "string",
+                  "description": "Campaign or project name"
+                },
+                "brand": {
+                  "type": "string",
+                  "description": "Brand associated with video"
+                },
+                "format": {
+                  "type": "string",
+                  "description": "Video format (TV, digital, social)"
+                },
+                "duration_target": {
+                  "type": "string",
+                  "description": "Target duration category"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "check_compliance",
+          "description": "Check video for brand compliance against guidelines",
+          "endpoint": "/mcp/tools/check_compliance",
+          "parameters": {
+            "video_id": {
+              "type": "string",
+              "required": true,
+              "description": "Video ID from previous analysis"
+            },
+            "brand_guidelines": {
+              "type": "object",
+              "required": true,
+              "description": "Brand guidelines for compliance checking",
+              "properties": {
+                "logo_placement": {
+                  "type": "object",
+                  "description": "Logo placement requirements"
+                },
+                "brand_colors": {
+                  "type": "object",
+                  "description": "Approved brand colors",
+                  "properties": {
+                    "approved_colors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of approved hex colors"
+                    }
+                  }
+                },
+                "messaging_guidelines": {
+                  "type": "object",
+                  "description": "Messaging and tone requirements",
+                  "properties": {
+                    "required_phrases": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Phrases that must be included"
+                    },
+                    "prohibited_phrases": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Phrases that must not be included"
+                    }
+                  }
+                }
+              }
+            },
+            "check_areas": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "logo_placement",
+                  "color_compliance",
+                  "messaging",
+                  "audio_quality"
+                ]
+              },
+              "required": false,
+              "default": [
+                "logo_placement",
+                "color_compliance",
+                "messaging",
+                "audio_quality"
+              ],
+              "description": "Areas to check for compliance"
+            }
+          }
+        },
+        {
+          "name": "search_videos",
+          "description": "Search through analyzed videos using semantic or visual search",
+          "endpoint": "/mcp/tools/search_videos",
+          "parameters": {
+            "query": {
+              "type": "string",
+              "required": true,
+              "description": "Search query (text description or keywords)"
+            },
+            "search_type": {
+              "type": "string",
+              "required": false,
+              "default": "semantic",
+              "enum": [
+                "semantic",
+                "visual",
+                "audio",
+                "metadata"
+              ],
+              "description": "Type of search to perform"
+            },
+            "filters": {
+              "type": "object",
+              "required": false,
+              "description": "Search filters",
+              "properties": {
+                "brand": {
+                  "type": "string",
+                  "description": "Filter by brand"
+                },
+                "campaign": {
+                  "type": "string",
+                  "description": "Filter by campaign"
+                },
+                "duration_min": {
+                  "type": "number",
+                  "description": "Minimum duration in seconds"
+                },
+                "duration_max": {
+                  "type": "number",
+                  "description": "Maximum duration in seconds"
+                },
+                "created_after": {
+                  "type": "string",
+                  "description": "Filter by creation date (ISO format)"
+                }
+              }
+            },
+            "limit": {
+              "type": "integer",
+              "required": false,
+              "default": 10,
+              "description": "Maximum number of results"
+            }
+          }
+        },
+        {
+          "name": "upload_video",
+          "description": "Upload and analyze video file",
+          "endpoint": "/mcp/tools/upload_video",
+          "parameters": {
+            "file": {
+              "type": "file",
+              "required": true,
+              "description": "Video file to upload"
+            },
+            "analysis_type": {
+              "type": "string",
+              "required": false,
+              "default": "comprehensive",
+              "description": "Type of analysis to perform"
+            },
+            "metadata": {
+              "type": "string",
+              "required": false,
+              "default": "{}",
+              "description": "JSON string of metadata"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/video_rag_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.104.1",
+        "uvicorn==0.24.0",
+        "pydantic==2.5.0",
+        "qdrant-client==1.6.9",
+        "sentence-transformers==2.2.2",
+        "opencv-python==4.8.1.78",
+        "pillow==10.1.0",
+        "moviepy==1.0.3",
+        "torch==2.1.1",
+        "torchvision==0.16.1",
+        "transformers==4.35.2",
+        "speechrecognition==3.10.0",
+        "pyaudio==0.2.11",
+        "numpy==1.24.3",
+        "hashlib3==1.0.1",
+        "python-multipart==0.0.6",
+        "aiofiles==23.2.1"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/video_rag_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/video_rag_mcp/README.md",
+      "config_hash": "63a8062acca837e13e240b917d01cbe9",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8008/health",
+      "api_endpoint": "http://localhost:8008",
+      "registered_at": "2025-07-06T14:59:42.394605",
+      "category": "knowledge",
+      "priority": "high"
+    },
+    "synthetic_data_mcp": {
+      "name": "synthetic_data_mcp",
+      "path": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/synthetic_data_mcp",
+      "discovered_at": "2025-07-06T14:59:42.385226",
+      "server_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/synthetic_data_mcp/src/synthetic_server.py",
+      "language": "python",
+      "port": 8005,
+      "agent_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/synthetic_data_mcp/agents/synthetic_generator.yaml",
+      "agent_name": "ph-retail-synthetic-generator",
+      "description": "Synthetic data generator for PH retail landscape with TBWA client footprint",
+      "version": "1.0.0",
+      "capabilities": [
+        "transaction_generation",
+        "market_simulation",
+        "geo_accurate_locations",
+        "tobacco_modeling",
+        "data_validation"
+      ],
+      "tools": [
+        {
+          "name": "generate_data",
+          "description": "Generate synthetic retail transaction data",
+          "endpoint": "/mcp/tools/generate_data",
+          "parameters": {
+            "dataset_type": {
+              "type": "string",
+              "required": true,
+              "default": "transactions",
+              "enum": [
+                "transactions",
+                "inventory",
+                "customer_profiles"
+              ],
+              "description": "Type of dataset to generate"
+            },
+            "num_records": {
+              "type": "integer",
+              "required": true,
+              "default": 10000,
+              "description": "Number of records to generate"
+            },
+            "start_date": {
+              "type": "string",
+              "required": false,
+              "format": "date",
+              "description": "Start date (YYYY-MM-DD)"
+            },
+            "end_date": {
+              "type": "string",
+              "required": false,
+              "format": "date",
+              "description": "End date (YYYY-MM-DD)"
+            },
+            "client_weight": {
+              "type": "number",
+              "required": false,
+              "default": 0.55,
+              "minimum": 0,
+              "maximum": 1,
+              "description": "TBWA client market share"
+            },
+            "tobacco_share": {
+              "type": "number",
+              "required": false,
+              "default": 0.18,
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Tobacco category share of transactions"
+            },
+            "output_format": {
+              "type": "string",
+              "required": false,
+              "default": "csv",
+              "enum": [
+                "csv",
+                "json",
+                "parquet"
+              ],
+              "description": "Output file format"
+            }
+          }
+        },
+        {
+          "name": "validate_quality",
+          "description": "Validate synthetic data quality",
+          "endpoint": "/mcp/tools/validate_quality",
+          "parameters": {
+            "dataset_path": {
+              "type": "string",
+              "required": true,
+              "description": "Path to dataset file"
+            },
+            "validation_rules": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "completeness",
+                  "distribution",
+                  "outliers"
+                ]
+              },
+              "required": false,
+              "default": [
+                "completeness",
+                "distribution",
+                "outliers"
+              ],
+              "description": "Validation checks to perform"
+            }
+          }
+        },
+        {
+          "name": "simulate_scenario",
+          "description": "Generate data for market scenarios",
+          "endpoint": "/mcp/tools/simulate_scenario",
+          "parameters": {
+            "scenario": {
+              "type": "string",
+              "required": true,
+              "enum": [
+                "normal",
+                "peak_season",
+                "competitor_promo",
+                "supply_shortage"
+              ],
+              "description": "Market scenario to simulate"
+            },
+            "duration_days": {
+              "type": "integer",
+              "required": true,
+              "default": 30,
+              "description": "Scenario duration in days"
+            },
+            "affected_brands": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "required": false,
+              "description": "Specific brands affected"
+            },
+            "impact_factor": {
+              "type": "number",
+              "required": false,
+              "default": 1.2,
+              "minimum": 0.5,
+              "maximum": 2.0,
+              "description": "Scenario impact multiplier"
+            }
+          }
+        }
+      ],
+      "requirements_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/synthetic_data_mcp/requirements.txt",
+      "dependencies": [
+        "fastapi==0.110.0",
+        "uvicorn[standard]==0.27.0",
+        "pydantic==2.5.3",
+        "pandas==2.2.0",
+        "numpy==1.24.3",
+        "faker==22.5.1",
+        "pyarrow==14.0.2",
+        "openpyxl==3.1.2",
+        "great-expectations==0.18.8",
+        "scipy==1.12.0",
+        "sdv==1.9.0",
+        "sdmetrics==0.12.1",
+        "matplotlib==3.8.2",
+        "seaborn==0.13.2",
+        "plotly==5.18.0",
+        "fastmcp==0.1.0"
+      ],
+      "setup_script": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/synthetic_data_mcp/scripts/setup.sh",
+      "readme_file": "/Users/tbwa/Documents/GitHub/InsightPulseAI_SKR/tools/js/mcp/synthetic_data_mcp/README.md",
+      "config_hash": "169d827eb9a65375c965f8473e3e42aa",
+      "status": "registered",
+      "health_endpoint": "http://localhost:8005/health",
+      "api_endpoint": "http://localhost:8005",
+      "registered_at": "2025-07-06T14:59:42.394607",
+      "category": "data",
+      "priority": "medium"
+    }
+  }
+}
