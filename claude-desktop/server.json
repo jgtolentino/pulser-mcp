@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "pulser-mcp": {
+      "command": "node",
+      "args": ["/Users/tbwa/Documents/GitHub/pulser-mcp-server/claude-desktop/pulser-mcp-bridge.js"],
+      "env": {
+        "PULSER_URL": "http://localhost:8000",
+        "PULSER_JWT_SECRET": "your-secret-jwt-key-change-this-in-production"
+      }
+    }
+  }
+}
