@@ -10,6 +10,7 @@ DOMAIN="pulser-ai.com"
 SERVER_IP="your-server-ip"  # Update with actual server IP
 MCP_ADMIN_PASS="Postgres_admin"
 REDIS_PASSWORD="Postgres_26!"
+NEO4J_PASSWORD="Postgres_26!"
 
 echo "🚀 Deploying Pulser MCP Infrastructure"
 echo "Email: $EMAIL"
@@ -110,6 +111,7 @@ PULSER_JWT_SECRET=\$JWT_SECRET
 EMAIL=$EMAIL
 MCP_ADMIN_PASS=$MCP_ADMIN_PASS
 REDIS_PASSWORD=$REDIS_PASSWORD
+NEO4J_PASSWORD=$NEO4J_PASSWORD
 EOL
 
 chmod 600 /opt/pulser-mcp-bridge/.env
