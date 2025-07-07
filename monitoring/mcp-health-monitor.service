@@ -1,0 +1,44 @@
+[Unit]
+Description=Pulser MCP Health Monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=monitoring
+Group=monitoring
+WorkingDirectory=/opt/pulser-mcp-monitoring
+
+# Python execution
+ExecStart=/usr/bin/python3 /opt/pulser-mcp-monitoring/health-monitor.py
+
+# Environment
+Environment="SSE_URL=https://pulser-ai.com/sse"
+Environment="HEALTH_URL=https://pulser-ai.com/health"
+Environment="CHECK_INTERVAL=60"
+Environment="LOG_FILE=/var/log/pulser-mcp-health.log"
+# Uncomment and set webhook URL for external alerts
+# Environment="ALERT_WEBHOOK=https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+
+# Restart policy
+Restart=always
+RestartSec=30
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/log
+
+# Resource limits
+MemoryLimit=256M
+CPUQuota=10%
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mcp-health-monitor
+
+[Install]
+WantedBy=multi-user.target

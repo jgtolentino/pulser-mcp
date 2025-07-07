@@ -1,0 +1,131 @@
+name: Remote MCP Health Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run every 5 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check SSE Endpoint
+      id: sse-check
+      run: |
+        response=$(curl -s -o /dev/null -w "%{http_code}" \
+          -H "Accept: text/event-stream" \
+          --max-time 10 \
+          https://pulser-ai.com/sse || echo "000")
+        
+        echo "sse_status=$response" >> $GITHUB_OUTPUT
+        
+        if [ "$response" != "200" ]; then
+          echo "❌ SSE endpoint returned status: $response"
+          exit 1
+        else
+          echo "✅ SSE endpoint is healthy"
+        fi
+    
+    - name: Check Health Endpoint
+      id: health-check
+      run: |
+        response=$(curl -s -o /dev/null -w "%{http_code}" \
+          --max-time 10 \
+          https://pulser-ai.com/health || echo "000")
+        
+        echo "health_status=$response" >> $GITHUB_OUTPUT
+        
+        if [ "$response" != "200" ]; then
+          echo "❌ Health endpoint returned status: $response"
+          exit 1
+        else
+          echo "✅ Health endpoint is healthy"
+        fi
+    
+    - name: Check MCP Services
+      id: services-check
+      run: |
+        services=$(curl -s --max-time 10 \
+          https://pulser-ai.com/mcp/services || echo "{}")
+        
+        service_count=$(echo "$services" | jq 'length' 2>/dev/null || echo "0")
+        echo "service_count=$service_count" >> $GITHUB_OUTPUT
+        
+        if [ "$service_count" -lt "12" ]; then
+          echo "⚠️ Expected 12 services, found: $service_count"
+          echo "$services" | jq . 2>/dev/null || echo "$services"
+        else
+          echo "✅ All $service_count MCP services available"
+        fi
+    
+    - name: Create Issue on Failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const title = '🚨 Remote MCP Health Check Failed';
+          const body = `
+          ## Health Check Failure
+          
+          The Remote MCP health check failed at ${new Date().toISOString()}.
+          
+          ### Status:
+          - SSE Endpoint: ${{ steps.sse-check.outputs.sse_status }}
+          - Health Endpoint: ${{ steps.health-check.outputs.health_status }}
+          - Service Count: ${{ steps.services-check.outputs.service_count }}
+          
+          ### Action Required:
+          1. Check if Pulser MCP services are running
+          2. Verify nginx is properly configured
+          3. Check SSL certificate validity
+          4. Review service logs
+          
+          [View Workflow Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          `;
+          
+          // Check if issue already exists
+          const issues = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'open',
+            labels: 'mcp-health'
+          });
+          
+          if (issues.data.length === 0) {
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: body,
+              labels: ['mcp-health', 'critical']
+            });
+          }
+    
+    - name: Close Issue on Success
+      if: success()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          // Close any open health check issues
+          const issues = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'open',
+            labels: 'mcp-health'
+          });
+          
+          for (const issue of issues.data) {
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              state: 'closed',
+              body: issue.body + '\n\n---\n\n✅ Resolved at ' + new Date().toISOString()
+            });
+          }
