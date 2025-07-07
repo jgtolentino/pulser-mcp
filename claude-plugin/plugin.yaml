@@ -1,0 +1,121 @@
+name: pulser-mcp
+version: 1.0.0
+description: "Pulser MCP integration plugin for Claude CLI"
+author: "InsightPulseAI"
+license: "MIT"
+
+# Plugin configuration
+config:
+  pulser_url: "${PULSER_URL:-http://localhost:8000}"
+  pulser_key: "${PULSER_KEY}"
+  timeout: 30
+  retries: 3
+
+# Command definitions
+commands:
+  - name: list
+    description: "List all registered Pulser MCP endpoints"
+    handler: "handlers.list_endpoints"
+    
+  - name: run
+    description: "Run a specific MCP service"
+    handler: "handlers.run_service"
+    args:
+      - name: service
+        description: "Service name to run"
+        required: true
+        type: string
+      - name: method
+        description: "Method to call"
+        required: false
+        type: string
+        default: "health"
+    
+  - name: sync-all
+    description: "Sync all MCP services with Supabase"
+    handler: "handlers.sync_all"
+    
+  - name: status
+    description: "Check status of all MCP services"
+    handler: "handlers.status_check"
+    
+  - name: auth
+    description: "Authenticate with Pulser MCP"
+    handler: "handlers.authenticate"
+    args:
+      - name: token
+        description: "JWT token"
+        required: false
+        type: string
+        
+  - name: deploy
+    description: "Deploy MCP services"
+    handler: "handlers.deploy_services"
+    args:
+      - name: environment
+        description: "Deployment environment"
+        required: false
+        type: string
+        default: "production"
+
+# MCP service mappings
+services:
+  scout_local:
+    port: 8000
+    description: "Scout Local MCP - Offline retail analytics"
+    
+  creative_rag:
+    port: 8001
+    description: "Creative RAG MCP - Vector-powered asset discovery"
+    
+  financial_analyst:
+    port: 8002
+    description: "Financial Analyst MCP - KPI forecasting"
+    
+  voice_agent:
+    port: 8003
+    description: "Voice Agent MCP - Real-time transcription"
+    
+  unified:
+    port: 8004
+    description: "Unified MCP - MindsDB integration"
+    
+  shared_memory:
+    port: 5700
+    description: "Shared Memory MCP - Neo4j graph & Redis cache"
+    
+  briefvault_rag:
+    port: 8005
+    description: "BriefVault RAG MCP - Document processing"
+    
+  synthetic_data:
+    port: 8006
+    description: "Synthetic Data MCP - PH retail simulation"
+    
+  deep_researcher:
+    port: 8007
+    description: "Deep Researcher MCP - Competitive intelligence"
+    
+  video_rag:
+    port: 8008
+    description: "Video RAG MCP - Frame extraction"
+    
+  audio_analysis:
+    port: 8009
+    description: "Audio Analysis MCP - Call center QA"
+    
+  bootstrap:
+    port: 8010
+    description: "Pulser Bootstrap - Service discovery"
+
+# Authentication configuration
+auth:
+  method: "jwt"
+  header: "Authorization"
+  prefix: "Bearer "
+  
+# Monitoring integration
+monitoring:
+  grafana_url: "http://localhost:3000"
+  prometheus_url: "http://localhost:9090"
+  loki_url: "http://localhost:3100"

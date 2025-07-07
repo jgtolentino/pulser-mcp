@@ -14,7 +14,7 @@ class MonitorSummary:
     def __init__(self):
         self.grafana_url = os.getenv('GRAFANA_URL', 'http://localhost:3000')
         self.grafana_key = os.getenv('GRAFANA_API_KEY', '')
-        self.pulser_url = os.getenv('PULSER_URL', 'http://gagambi-backend:8000')
+        self.pulser_url = os.getenv('PULSER_URL', 'https://gagambi-backend.onrender.com')
         self.jwt_token = self._get_jwt_token()
         
     def _get_jwt_token(self) -> str:
