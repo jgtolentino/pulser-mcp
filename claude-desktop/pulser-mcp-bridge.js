@@ -96,6 +96,14 @@ const tools = [
       type: 'object',
       properties: {}
     }
+  },
+  {
+    name: 'monitor_summary',
+    description: 'Get AI-powered summary of entire monitoring stack',
+    inputSchema: {
+      type: 'object',
+      properties: {}
+    }
   }
 ];
 
@@ -141,6 +149,26 @@ tools.forEach(tool => {
           
         case 'mcp_health':
           response = await api.get('/health/all');
+          break;
+          
+        case 'monitor_summary':
+          // Execute the monitor summary tool
+          const { exec } = require('child_process');
+          const { promisify } = require('util');
+          const execAsync = promisify(exec);
+          
+          try {
+            const { stdout } = await execAsync('python3 /Users/tbwa/Documents/GitHub/pulser-mcp-server/tools/monitor_summary.py');
+            const result = JSON.parse(stdout);
+            response = { data: result };
+          } catch (error) {
+            response = { 
+              data: { 
+                summary: `Error generating summary: ${error.message}`,
+                status: 'error'
+              }
+            };
+          }
           break;
           
         default:

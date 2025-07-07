@@ -76,6 +76,25 @@ app.post('/mcp/command', async (req, res) => {
   const { service, method, params } = req.body;
   
   try {
+    // Special handling for monitor_summary
+    if (service === 'monitor_summary') {
+      const { exec } = require('child_process');
+      const { promisify } = require('util');
+      const execAsync = promisify(exec);
+      
+      try {
+        const { stdout } = await execAsync('python3 /opt/pulser-mcp-bridge/monitor_summary.py');
+        const result = JSON.parse(stdout);
+        return res.json(result);
+      } catch (error) {
+        return res.status(500).json({ 
+          error: `Monitor summary failed: ${error.message}`,
+          status: 'error'
+        });
+      }
+    }
+    
+    // Default handling for other services
     const response = await fetch(`${PULSER_URL}/api/v1/${service}/${method}`, {
       method: 'POST',
       headers: {
