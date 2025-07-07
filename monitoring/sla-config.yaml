@@ -1,0 +1,141 @@
+# Pulser MCP SLA Configuration
+# Defines service level agreements and alert thresholds
+
+sla:
+  # Overall system availability target
+  availability_target: 99.9  # Three nines
+  
+  # Error budget (monthly)
+  error_budget_percent: 0.1  # 0.1% of requests can fail
+  
+  # Measurement window
+  measurement_window: 30d  # Rolling 30-day window
+
+# Service-specific SLAs
+services:
+  scout_local:
+    availability_target: 99.95
+    latency_p95_ms: 200
+    latency_p99_ms: 500
+    error_rate_threshold: 0.001  # 0.1%
+    
+  creative_rag:
+    availability_target: 99.9
+    latency_p95_ms: 1000
+    latency_p99_ms: 2000
+    error_rate_threshold: 0.005  # 0.5%
+    
+  financial_analyst:
+    availability_target: 99.9
+    latency_p95_ms: 3000
+    latency_p99_ms: 5000
+    error_rate_threshold: 0.01   # 1%
+    
+  shared_memory:
+    availability_target: 99.99  # Critical service
+    latency_p95_ms: 50
+    latency_p99_ms: 100
+    error_rate_threshold: 0.0001  # 0.01%
+
+# Alert thresholds
+alerts:
+  # Availability alerts
+  availability:
+    - name: "Service Down"
+      condition: "availability < 1"
+      duration: "1m"
+      severity: "critical"
+      
+    - name: "Service Degraded"
+      condition: "availability < 0.95"
+      duration: "5m"
+      severity: "warning"
+      
+    - name: "SLA Breach Risk"
+      condition: "availability < sla_target + 0.1"
+      duration: "15m"
+      severity: "info"
+  
+  # Latency alerts
+  latency:
+    - name: "High Latency P95"
+      condition: "p95_latency > sla_p95 * 2"
+      duration: "5m"
+      severity: "warning"
+      
+    - name: "Extreme Latency P99"
+      condition: "p99_latency > sla_p99 * 3"
+      duration: "2m"
+      severity: "critical"
+  
+  # Error rate alerts
+  error_rate:
+    - name: "High Error Rate"
+      condition: "error_rate > 0.05"
+      duration: "2m"
+      severity: "critical"
+      
+    - name: "Elevated Errors"
+      condition: "error_rate > 0.01"
+      duration: "5m"
+      severity: "warning"
+      
+    - name: "Error Budget Burn"
+      condition: "error_budget_remaining < 20"
+      duration: "30m"
+      severity: "warning"
+  
+  # Sync specific alerts
+  sync:
+    - name: "Sync Failure"
+      condition: "sync_lag > 300"
+      duration: "5m"
+      severity: "warning"
+      
+    - name: "Sync Critical"
+      condition: "sync_lag > 600"
+      duration: "2m"
+      severity: "critical"
+      
+    - name: "Sync Queue Overflow"
+      condition: "sync_queue_size > 10000"
+      duration: "10m"
+      severity: "warning"
+
+# Notification channels
+notifications:
+  - channel: "slack"
+    webhook: "${SLACK_WEBHOOK_URL}"
+    severities: ["critical", "warning"]
+    
+  - channel: "pagerduty"
+    integration_key: "${PAGERDUTY_KEY}"
+    severities: ["critical"]
+    
+  - channel: "email"
+    recipients: ["ops@pulser-ai.com"]
+    severities: ["warning", "info"]
+
+# Maintenance windows (UTC)
+maintenance_windows:
+  - description: "Weekly maintenance"
+    schedule: "0 3 * * 0"  # Sunday 3 AM UTC
+    duration: "2h"
+    
+  - description: "Monthly updates"
+    schedule: "0 2 1 * *"  # First day of month, 2 AM UTC
+    duration: "4h"
+
+# Alert suppression rules
+suppression_rules:
+  - name: "Suppress during maintenance"
+    condition: "in_maintenance_window"
+    suppress: ["info", "warning"]
+    
+  - name: "Suppress cascade alerts"
+    condition: "parent_service_down"
+    suppress: ["all"]
+    
+  - name: "Rate limit alerts"
+    max_alerts_per_hour: 10
+    per_service: true
