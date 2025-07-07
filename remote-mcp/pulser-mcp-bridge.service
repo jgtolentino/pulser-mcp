@@ -1,0 +1,39 @@
+[Unit]
+Description=Pulser MCP SSE Bridge for Claude Remote Integration
+After=network.target docker.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/pulser-mcp-bridge
+Environment="NODE_ENV=production"
+Environment="PORT=3001"
+Environment="PULSER_URL=http://localhost:8000"
+Environment="PULSER_JWT_SECRET=your-secret-jwt-key-change-this-in-production"
+
+# Node.js execution
+ExecStart=/usr/bin/node index.js
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/pulser-mcp-bridge
+
+# Resource limits
+MemoryLimit=512M
+CPUQuota=50%
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pulser-mcp-bridge
+
+[Install]
+WantedBy=multi-user.target
