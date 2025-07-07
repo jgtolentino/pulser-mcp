@@ -9,7 +9,7 @@ app.use(cors())
 app.use(express.json())
 
 // Configuration
-const PULSER_URL = process.env.PULSER_URL || 'http://localhost:8000'
+const PULSER_URL = process.env.PULSER_URL || 'http://gagambi-backend:8000'
 const JWT_SECRET = process.env.PULSER_JWT_SECRET || 'your-secret-jwt-key-change-this-in-production'
 const PORT = process.env.PORT || 3001
 

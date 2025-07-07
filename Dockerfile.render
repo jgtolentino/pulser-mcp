@@ -1,0 +1,37 @@
+# Multi-service Dockerfile for Render
+# Runs all MCP services in one container
+
+FROM python:3.10-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    nodejs \
+    npm \
+    curl \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy all MCP services
+COPY . .
+
+# Install Node dependencies for services that need them
+RUN cd /app/remote-mcp && npm install --production
+
+# Install supervisor to run multiple services
+RUN pip install supervisor
+
+# Create supervisor config
+RUN mkdir -p /etc/supervisor/conf.d
+COPY supervisor.conf /etc/supervisor/conf.d/
+
+# Expose all service ports
+EXPOSE 8000 8001 8002 8003 8004 8005 8006 8007 8008 8009 5700
+
+# Start supervisor
+CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

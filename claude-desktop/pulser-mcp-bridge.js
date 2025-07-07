@@ -5,7 +5,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
-const PULSER_URL = process.env.PULSER_URL || 'http://localhost:8000';
+const PULSER_URL = process.env.PULSER_URL || 'http://gagambi-backend:8000';
 const JWT_SECRET = process.env.PULSER_JWT_SECRET || 'your-secret-jwt-key-change-this-in-production';
 
 // Generate JWT token for authentication
