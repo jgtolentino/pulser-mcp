@@ -4,7 +4,7 @@ services:
     name: pulser-mcp-simple
     env: node
     plan: free
-    buildCommand: npm install
+    buildCommand: npm ci --production
     startCommand: node src/server.js
     envVars:
       - key: NODE_ENV
