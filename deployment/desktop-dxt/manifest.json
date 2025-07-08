@@ -1,0 +1,23 @@
+{
+  "name": "MCP Server",
+  "version": "1.0.0",
+  "description": "Local SQLite + Claude Integration Server",
+  "entry": "src/main.js",
+  "type": "node",
+  "icon": "assets/icon.png",
+  "env": {
+    "MCP_PORT": "8000",
+    "MCP_HOST": "127.0.0.1",
+    "DB_PATH": "./data/mcp.db",
+    "LOG_LEVEL": "info"
+  },
+  "permissions": ["fs", "sqlite", "network"],
+  "author": "MCP Team",
+  "license": "MIT",
+  "minimumClaudeVersion": "1.0.0",
+  "scripts": {
+    "start": "node src/main.js",
+    "stop": "pkill -f 'mcp-server'",
+    "test": "node tests/test-suite.js"
+  }
+}

@@ -1,0 +1,75 @@
+services:
+  # Main MCP Server
+  - type: web
+    name: mcp-cloud-server
+    env: node
+    plan: free
+    buildCommand: |
+      cd deployment/cloud && npm install
+    startCommand: |
+      node src/server.js
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: NODE_ENV
+        value: production
+      - key: API_KEY
+        generateValue: true # Render will generate a secure key
+      - key: REDIS_URL
+        fromService:
+          name: mcp-redis
+          type: redis
+          property: connectionString
+      - key: DB_PATH
+        value: /mnt/data/mcp.db
+      - key: LOG_LEVEL
+        value: info
+    autoDeploy: true
+    branch: main
+    region: oregon
+    healthCheckPath: /health
+    numInstances: 1
+    disk:
+      name: mcp-storage
+      mountPath: /mnt/data
+      sizeGB: 1
+    
+  # CORS Proxy Service (optional, for stricter CORS environments)
+  - type: web
+    name: mcp-cors-proxy
+    env: node
+    plan: free
+    buildCommand: |
+      cd deployment/cloud && npm install
+    startCommand: |
+      node src/cors-proxy.js
+    envVars:
+      - key: PORT
+        value: 8001
+      - key: MCP_HOST
+        fromService:
+          type: web
+          name: mcp-cloud-server
+          property: host
+      - key: MCP_PORT
+        value: 8000
+      - key: NODE_ENV
+        value: production
+    autoDeploy: true
+    branch: main
+    region: oregon
+    healthCheckPath: /health
+    
+# Redis for distributed rate limiting and caching
+  - type: redis
+    name: mcp-redis
+    plan: free
+    region: oregon
+    maxmemoryPolicy: allkeys-lru
+
+# Database for persistent storage
+databases:
+  - name: mcp-postgres
+    plan: free
+    region: oregon
+    # Optional: Use PostgreSQL instead of SQLite for production

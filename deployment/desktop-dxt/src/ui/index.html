@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Complete Server - Desktop</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🚀 MCP Complete Server</h1>
+                    <span class="version">Desktop v1.0.0</span>
+                </div>
+                <div class="header-actions">
+                    <button id="refresh-btn" class="btn btn-secondary">🔄 Refresh</button>
+                    <button id="settings-btn" class="btn btn-primary">⚙️ Settings</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Navigation -->
+            <nav class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#dashboard" class="nav-link active" data-tab="dashboard">📊 Dashboard</a></li>
+                    <li><a href="#tools" class="nav-link" data-tab="tools">🛠️ MCP Tools</a></li>
+                    <li><a href="#logs" class="nav-link" data-tab="logs">📄 Logs</a></li>
+                    <li><a href="#settings" class="nav-link" data-tab="settings">⚙️ Settings</a></li>
+                    <li><a href="#integration" class="nav-link" data-tab="integration">🌐 Claude Integration</a></li>
+                </ul>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Tab -->
+                <div id="dashboard" class="tab-content active">
+                    <h2>Server Status Dashboard</h2>
+                    
+                    <div class="status-grid">
+                        <div class="status-card">
+                            <div class="status-header">
+                                <h3>MCP Server</h3>
+                                <div id="server-status" class="status-indicator status-unknown">●</div>
+                            </div>
+                            <div class="status-body">
+                                <p><strong>Port:</strong> <span id="server-port">8000</span></p>
+                                <p><strong>Status:</strong> <span id="server-status-text">Checking...</span></p>
+                                <p><strong>Uptime:</strong> <span id="server-uptime">-</span></p>
+                            </div>
+                            <div class="status-actions">
+                                <button id="restart-server-btn" class="btn btn-warning">🔄 Restart</button>
+                                <button id="open-browser-btn" class="btn btn-primary">🌐 Open</button>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <div class="status-header">
+                                <h3>CORS Proxy</h3>
+                                <div id="proxy-status" class="status-indicator status-unknown">●</div>
+                            </div>
+                            <div class="status-body">
+                                <p><strong>Port:</strong> <span id="proxy-port">8001</span></p>
+                                <p><strong>Status:</strong> <span id="proxy-status-text">Checking...</span></p>
+                                <p><strong>Target:</strong> <span id="proxy-target">localhost:8000</span></p>
+                            </div>
+                            <div class="status-actions">
+                                <button id="test-proxy-btn" class="btn btn-secondary">🧪 Test</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button id="test-connection-btn" class="btn btn-primary">🔗 Test Connection</button>
+                            <button id="view-logs-btn" class="btn btn-secondary">📄 View Logs</button>
+                            <button id="open-logs-folder-btn" class="btn btn-secondary">📁 Open Logs Folder</button>
+                            <button id="copy-urls-btn" class="btn btn-secondary">📋 Copy URLs</button>
+                        </div>
+                    </div>
+
+                    <div class="server-info">
+                        <h3>Server Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Direct URL:</label>
+                                <code id="direct-url">http://localhost:8000</code>
+                            </div>
+                            <div class="info-item">
+                                <label>CORS Proxy URL:</label>
+                                <code id="proxy-url">http://localhost:8001</code>
+                            </div>
+                            <div class="info-item">
+                                <label>Health Endpoint:</label>
+                                <code id="health-url">http://localhost:8000/health</code>
+                            </div>
+                            <div class="info-item">
+                                <label>Capabilities:</label>
+                                <code id="capabilities-url">http://localhost:8000/capabilities</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tools Tab -->
+                <div id="tools" class="tab-content">
+                    <h2>MCP Tools Testing</h2>
+                    
+                    <div class="tools-container">
+                        <div class="tool-selector">
+                            <label for="tool-select">Select Tool:</label>
+                            <select id="tool-select">
+                                <option value="sqlite_get">sqlite_get - Get value by key</option>
+                                <option value="sqlite_set">sqlite_set - Set key-value pair</option>
+                                <option value="sqlite_delete">sqlite_delete - Delete key</option>
+                                <option value="sqlite_query">sqlite_query - Execute SQL</option>
+                                <option value="sqlite_list">sqlite_list - List keys</option>
+                                <option value="get_logs">get_logs - Get system logs</option>
+                            </select>
+                        </div>
+
+                        <div class="tool-parameters">
+                            <h4>Parameters</h4>
+                            <div id="tool-params">
+                                <!-- Dynamic parameter inputs will be inserted here -->
+                            </div>
+                            <button id="execute-tool-btn" class="btn btn-primary">▶️ Execute Tool</button>
+                        </div>
+
+                        <div class="tool-result">
+                            <h4>Result</h4>
+                            <pre id="tool-output">Select a tool and click execute to see results...</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logs Tab -->
+                <div id="logs" class="tab-content">
+                    <h2>Server Logs</h2>
+                    
+                    <div class="logs-controls">
+                        <button id="refresh-logs-btn" class="btn btn-primary">🔄 Refresh</button>
+                        <button id="clear-logs-btn" class="btn btn-warning">🗑️ Clear Display</button>
+                        <button id="export-logs-btn" class="btn btn-secondary">💾 Export</button>
+                    </div>
+
+                    <div class="logs-container">
+                        <pre id="logs-content">Loading logs...</pre>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="settings" class="tab-content">
+                    <h2>Settings</h2>
+                    
+                    <div class="settings-form">
+                        <div class="setting-group">
+                            <h3>Server Configuration</h3>
+                            <div class="form-row">
+                                <label for="mcp-port-input">MCP Server Port:</label>
+                                <input type="number" id="mcp-port-input" min="1000" max="65535" value="8000">
+                            </div>
+                            <div class="form-row">
+                                <label for="cors-port-input">CORS Proxy Port:</label>
+                                <input type="number" id="cors-port-input" min="1000" max="65535" value="8001">
+                            </div>
+                        </div>
+
+                        <div class="setting-group">
+                            <h3>Application Settings</h3>
+                            <div class="form-row">
+                                <label>
+                                    <input type="checkbox" id="auto-start-checkbox"> 
+                                    Start automatically on system boot
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label>
+                                    <input type="checkbox" id="minimize-tray-checkbox"> 
+                                    Minimize to system tray
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label>
+                                    <input type="checkbox" id="notifications-checkbox"> 
+                                    Show notifications
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-actions">
+                            <button id="save-settings-btn" class="btn btn-primary">💾 Save Settings</button>
+                            <button id="reset-settings-btn" class="btn btn-warning">🔄 Reset to Defaults</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integration Tab -->
+                <div id="integration" class="tab-content">
+                    <h2>Claude Web App Integration</h2>
+                    
+                    <div class="integration-guide">
+                        <div class="guide-section">
+                            <h3>🌐 Step 1: Open Claude Web App</h3>
+                            <p>Navigate to <a href="https://claude.ai" target="_blank">claude.ai</a> in your browser.</p>
+                        </div>
+
+                        <div class="guide-section">
+                            <h3>⚙️ Step 2: Access Settings</h3>
+                            <p>Click on Settings → Integrations in the Claude Web App.</p>
+                        </div>
+
+                        <div class="guide-section">
+                            <h3>➕ Step 3: Add Integration</h3>
+                            <p>Click "Add New Integration" and use these settings:</p>
+                            
+                            <div class="integration-config">
+                                <div class="config-item">
+                                    <label>Name:</label>
+                                    <input type="text" value="MCP Complete Server" readonly>
+                                    <button class="copy-btn" data-copy="MCP Complete Server">📋</button>
+                                </div>
+                                <div class="config-item">
+                                    <label>URL:</label>
+                                    <input type="text" id="integration-url" value="http://localhost:8000" readonly>
+                                    <button class="copy-btn" data-copy-id="integration-url">📋</button>
+                                </div>
+                                <div class="config-item">
+                                    <label>Type:</label>
+                                    <input type="text" value="HTTP" readonly>
+                                    <button class="copy-btn" data-copy="HTTP">📋</button>
+                                </div>
+                                <div class="config-item">
+                                    <label>Authentication:</label>
+                                    <input type="text" value="None" readonly>
+                                    <button class="copy-btn" data-copy="None">📋</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="guide-section">
+                            <h3>🔗 Alternative: CORS Proxy</h3>
+                            <p>If you experience CORS issues, use the proxy URL instead:</p>
+                            <div class="config-item">
+                                <label>Proxy URL:</label>
+                                <input type="text" id="proxy-integration-url" value="http://localhost:8001" readonly>
+                                <button class="copy-btn" data-copy-id="proxy-integration-url">📋</button>
+                            </div>
+                        </div>
+
+                        <div class="guide-section">
+                            <h3>🧪 Step 4: Test Integration</h3>
+                            <p>Use these example commands in Claude to test the integration:</p>
+                            
+                            <div class="test-commands">
+                                <div class="command-example">
+                                    <h4>Store a value:</h4>
+                                    <code>{"tool": "sqlite_set", "parameters": {"key": "test_key", "value": "Hello MCP!"}}</code>
+                                    <button class="copy-btn" data-copy='{"tool": "sqlite_set", "parameters": {"key": "test_key", "value": "Hello MCP!"}}'>📋</button>
+                                </div>
+                                
+                                <div class="command-example">
+                                    <h4>Retrieve a value:</h4>
+                                    <code>{"tool": "sqlite_get", "parameters": {"key": "test_key"}}</code>
+                                    <button class="copy-btn" data-copy='{"tool": "sqlite_get", "parameters": {"key": "test_key"}}'>📋</button>
+                                </div>
+                                
+                                <div class="command-example">
+                                    <h4>List all keys:</h4>
+                                    <code>{"tool": "sqlite_list", "parameters": {"limit": 10}}</code>
+                                    <button class="copy-btn" data-copy='{"tool": "sqlite_list", "parameters": {"limit": 10}}'>📋</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="guide-section">
+                            <h3>✅ Verification</h3>
+                            <div class="verification-checks">
+                                <button id="verify-server-btn" class="btn btn-primary">🔍 Verify Server</button>
+                                <button id="test-tools-btn" class="btn btn-secondary">🧪 Test Tools</button>
+                                <button id="open-claude-btn" class="btn btn-primary">🌐 Open Claude</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

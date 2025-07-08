@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "name": "mcp-cloud-relay",
+  "builds": [
+    {
+      "src": "src/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/health",
+      "dest": "/src/server.js"
+    },
+    {
+      "src": "/capabilities",
+      "dest": "/src/server.js"
+    },
+    {
+      "src": "/mcp/(.*)",
+      "dest": "/src/server.js"
+    },
+    {
+      "src": "/metrics",
+      "dest": "/src/server.js"
+    },
+    {
+      "src": "/stats",
+      "dest": "/src/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "regions": ["iad1"],
+  "functions": {
+    "src/server.js": {
+      "maxDuration": 30
+    }
+  }
+}

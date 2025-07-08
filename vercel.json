@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "name": "mcp-cloud-server",
+  "builds": [
+    {
+      "src": "deployment/cloud/src/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "deployment/cloud/src/server.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-API-Key"
+      }
+    }
+  ],
+  "env": {
+    "PORT": "8000",
+    "NODE_ENV": "production",
+    "API_KEY": "@mcp-api-key",
+    "LOG_LEVEL": "info"
+  },
+  "regions": ["sfo1"],
+  "functions": {
+    "deployment/cloud/src/server.js": {
+      "maxDuration": 30,
+      "memory": 512
+    }
+  },
+  "github": {
+    "silent": true,
+    "autoAlias": true
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Powered-By",
+          "value": "MCP-Server-Vercel"
+        },
+        {
+          "key": "X-Claude-Compatible",
+          "value": "true"
+        }
+      ]
+    }
+  ]
+}

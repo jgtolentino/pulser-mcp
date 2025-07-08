@@ -1,0 +1,81 @@
+{
+  "name": "Complete MCP Server",
+  "description": "Comprehensive SQLite-based MCP server with advanced features",
+  "configurations": [
+    {
+      "name": "Direct Connection",
+      "url": "http://localhost:8000",
+      "type": "http",
+      "authentication": {
+        "type": "none"
+      },
+      "capabilities": [
+        "database_operations",
+        "key_value_store",
+        "sql_queries",
+        "real_time_updates"
+      ]
+    },
+    {
+      "name": "CORS Proxy Connection", 
+      "url": "http://localhost:8001",
+      "type": "http",
+      "authentication": {
+        "type": "none"
+      },
+      "capabilities": [
+        "database_operations",
+        "key_value_store", 
+        "sql_queries",
+        "real_time_updates"
+      ],
+      "notes": "Use this if you experience CORS issues with direct connection"
+    }
+  ],
+  "tools": [
+    {
+      "name": "sqlite_get",
+      "description": "Retrieve value by key from SQLite database",
+      "example": {
+        "tool": "sqlite_get",
+        "parameters": {
+          "key": "my_key"
+        }
+      }
+    },
+    {
+      "name": "sqlite_set",
+      "description": "Store key-value pair in SQLite database",
+      "example": {
+        "tool": "sqlite_set", 
+        "parameters": {
+          "key": "my_key",
+          "value": "my_value",
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "sqlite_query",
+      "description": "Execute SQL query on SQLite database",
+      "example": {
+        "tool": "sqlite_query",
+        "parameters": {
+          "query": "SELECT * FROM mcp_data WHERE key LIKE ?",
+          "params": ["%search%"]
+        }
+      }
+    },
+    {
+      "name": "sqlite_list",
+      "description": "List keys with optional pattern matching",
+      "example": {
+        "tool": "sqlite_list",
+        "parameters": {
+          "pattern": "%user_%",
+          "limit": 50
+        }
+      }
+    }
+  ]
+}

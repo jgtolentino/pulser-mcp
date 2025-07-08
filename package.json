@@ -1,0 +1,30 @@
+{
+  "name": "mcp-complete-server",
+  "version": "1.0.0",
+  "description": "Complete MCP Server Solution for Claude Web App",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "cors": "node src/cors-proxy.js",
+    "test": "node tests/test-suite.js",
+    "integrate": "node scripts/integrate-existing.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6",
+    "ws": "^8.13.0",
+    "http-proxy-middleware": "^2.0.6",
+    "winston": "^3.10.0",
+    "fs-extra": "^11.1.1",
+    "compression": "^1.7.4",
+    "helmet": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
