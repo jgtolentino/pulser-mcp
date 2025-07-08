@@ -1,0 +1,21 @@
+services:
+  - name: pulser-mcp-simple
+    type: web
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node src/server.js
+    envVars:
+      NODE_ENV: production
+      PORT: 10000
+      DB_PATH: /mnt/data/mcp.db
+      LOG_LEVEL: info
+    repo: https://github.com/jgtolentino/pulser-mcp
+    branch: claude-mcp-simple
+    autoDeploy: true
+    healthCheckPath: /health
+    region: oregon
+    disk:
+      name: mcp-storage
+      mountPath: /mnt/data
+      sizeGB: 1
