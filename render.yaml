@@ -1,11 +1,11 @@
 services:
-  # Main MCP Server
   - type: web
-    name: pulser-mcp-simple
+    name: pulser-mcp
     env: node
     plan: free
     buildCommand: npm ci --production
     startCommand: node src/server.js
+    nodeVersion: 18.17.0
     envVars:
       - key: NODE_ENV
         value: production
